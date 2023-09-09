@@ -51,9 +51,6 @@ function getMembersIds(data){
 }
 
 console.log(getMembersIds(dataFromFile))
-//console.log(getMembersIds())
-
 
 function diff (a, b) {
-
 }
