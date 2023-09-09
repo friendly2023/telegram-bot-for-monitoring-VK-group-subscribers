@@ -21,7 +21,6 @@ fetch("https://api.vk.com/method/groups.getMembers", {
     .then(data => {
         writeToFile(JSON.stringify(data, null, 2), adres);
         return data
-        // console.log(JSON.stringify(data, null, 2))
     })
     .then(dataFromInternet =>
         {getMembersIds(dataFromInternet)
