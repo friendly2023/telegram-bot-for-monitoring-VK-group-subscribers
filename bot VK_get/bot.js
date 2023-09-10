@@ -2,7 +2,7 @@ const fs = require('fs');
 const { VKApi, ConsoleLogger } = require('node-vk-sdk')
 const token1 = 'vk1.a.ErwnlIGmU0lJKC1ZHLqAh35zzxpRSSz-iApCbwhwhVvJgnfE9DZA5M1UGT-Bn7gAGQwgT5bmASk-ZE09nNbCQJ9NjCU4Vz1f0tksmLt3A8q7538osE9r5PTU_HIhKcH2y_4KEvUPVACgF4TFKuEWk8orM-r0uD9QM2YbZUGaT2tM98gUW7Ujuxn-mY71AXhZQfyCNfCmFz5tNlchU8CuzQ'
 const serviceKey = "cbd1a557cbd1a557cbd1a557fac8c436bdccbd1cbd1a557af2df0271cf1f9fc163446e5"
-//ввести данные
+//ввести данные.
 const groupId = `tinkoffbank`;
 const nameFile = `Подписчики группы ${groupId}.json`;
 const adres = `c:\\Programming Project\\bot VK_get\\${nameFile}`;
