@@ -2,10 +2,6 @@ const fs = require('fs');
 const { VKApi, ConsoleLogger } = require('node-vk-sdk')
 const token1 = 'vk1.a.ErwnlIGmU0lJKC1ZHLqAh35zzxpRSSz-iApCbwhwhVvJgnfE9DZA5M1UGT-Bn7gAGQwgT5bmASk-ZE09nNbCQJ9NjCU4Vz1f0tksmLt3A8q7538osE9r5PTU_HIhKcH2y_4KEvUPVACgF4TFKuEWk8orM-r0uD9QM2YbZUGaT2tM98gUW7Ujuxn-mY71AXhZQfyCNfCmFz5tNlchU8CuzQ'
 const serviceKey = "cbd1a557cbd1a557cbd1a557fac8c436bdccbd1cbd1a557af2df0271cf1f9fc163446e5"
-//ввести данные.
-const groupId = `mikannoyuki`;
-const nameFile = `Подписчики группы ${groupId}.json`;
-const adres = `c:\\Programming Project\\bot VK_get\\${nameFile}`;
 
 
 fetch("https://api.vk.com/method/groups.getMembers", {
@@ -18,26 +14,20 @@ fetch("https://api.vk.com/method/groups.getMembers", {
     "method": "POST"
 })
     .then(response => response.json())
-    .then(data =>{
-        readerFile(adres);
-        return data})
+    .then(
+        readerFile(adres)
+    )
     .then(data => {
         writeToFile(JSON.stringify(data, null, 2), adres);
         return data
     })
-    .then(dataFromInternet => {
-        getMembersIds(dataFromInternet)
-        //console.log('данные из интернета:')
-        //console.log(getMembersIds(dataFromInternet))//данные из интернета
-        try{
-        let noSubscribers = getMembersIds(dataFromFile).filter(x => !getMembersIds(dataFromInternet).includes(x));//отписались
-        let subscribers = getMembersIds(dataFromInternet).filter(x => !getMembersIds(dataFromFile).includes(x));//подписались
-        console.log(gettingResultsNoSubscribers(noSubscribers))
-        console.log(gettingResultsSubscribers(subscribers))
-        }catch{
-            console.log('Ошибка вывода данных')
-        }
-    })
+    .then(dataFromInternet =>
+        {getMembersIds(dataFromInternet)
+        //console.log(getMembersIds(dataFromInternet))
+        console.log(diff (getMembersIds(dataFromInternet), getMembersIds(dataFromFile)))
+    }
+    )
+    
 
 function writeToFile(data, adres) {
     fs.writeFileSync(adres, data, err => {
@@ -48,8 +38,7 @@ function writeToFile(data, adres) {
     })
 }
 
-function readerFile(adres) {
-    try{
+function readerFile(adres){
     var fileReader = fs.readFileSync(adres).toString()
     return JSON.parse(fileReader)
     } catch(err){
@@ -59,53 +48,14 @@ function readerFile(adres) {
 
 var dataFromFile = readerFile(adres)//данные из файла
 
-function getMembersIds(data) {
-    try{
+function getMembersIds(data){
     return data.response.items.map(item => item.id)
-    }catch{
-        console.log('Ошибка данных из интернета')
-    }
 }
 
-// console.log('данные из файла:')
-// console.log(getMembersIds(dataFromFile))
+console.log(getMembersIds(dataFromFile))
+//console.log(getMembersIds())
 
-function gettingResultsNoSubscribers(noSubscribers) {
-    if (noSubscribers.length == 1) {
-        return `Отписался: ${noSubscribers}`
-    } else if (noSubscribers.length > 1) {
-        return `Отписались: ${noSubscribers}`
-    } else {
-        return 'Новых отписавшихся нет'
-    }
-}
 
-function gettingResultsSubscribers(subscribers) {
-    if (subscribers.length == 1) {
-        return `Подписался: ${subscribers}`
-    } else if (subscribers.length > 1) {
-        return `Подписались: ${subscribers}`
-    } else {
-        return 'Новых подписчиков нет'
-    }
-}
+function diff (a, b) {
 
-function writingDefaultFileText(nameFile) {
-    const defaultFileText = `{
-    "response": {
-      "count": 1,
-      "items": [
-        
-      ]
-    }
-  }`
-    fs.access(`${adres}`, function (error) {
-        if (error) {
-            //создает файл и записывает в него text
-            fs.appendFile(`${adres}`, `${defaultFileText}`, (err) => {
-                if (err) throw err;
-            })
-
-        }
-    });
 }
