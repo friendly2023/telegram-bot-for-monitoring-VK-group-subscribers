@@ -1,9 +1,9 @@
 const { serviceKey } = require('./serviceKey');
 const { writeToFile, readFile } = require('./utils');
 //ввести данные.
-const groupId = `mikannoyuki`;
+const groupId = `richie.r.dragon`;
 const nameFile = `Подписчики группы ${groupId}.json`;
-const filePath = `./target/${nameFile}`;
+const filePath = `.\\bot VK_get\\target\\${nameFile}`;
 exports.filePath = filePath;
 
 compareMembersData()
