@@ -3,8 +3,8 @@ const { serviceKey } = require('./serviceKey');
 const { writeToFile, readFile } = require('./utils');
 //ввести данные.
 const groupId = `richie.r.dragon`;
-const nameFile = `Подписчики группы ${groupId}.json`;
-const filePath = `.\\bot VK_get\\target\\${nameFile}`;
+const nameFile = `${groupId}.json`;
+const filePath = `./bot VK_get/target/${nameFile}`;
 const filePath1 = `./bot VK_get/target`;
 exports.filePath = filePath;
 
@@ -27,10 +27,8 @@ async function compareMembersData() {
 }
 
 async function creatingFolder() {
-    var dir = './bot VK_get/target';
-
- if (!fs.existsSync(dir)){
-     fs.mkdirSync(dir);
+     if (!fs.existsSync(filePath1)){
+     fs.mkdirSync(filePath1);
  } 
  }
 
