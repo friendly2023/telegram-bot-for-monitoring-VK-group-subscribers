@@ -4,7 +4,7 @@ const TelegramApi = require('node-telegram-bot-api')
 const bot = new TelegramApi(token, { polling: true })
 
 //редактируемое
-const fileTarget = './bot VK_get/target/';//путь до папки /target
+const fileTarget = './Programming-Project/bot VK_get/target/';//путь до папки /target
 
 bot.setMyCommands([
     {
