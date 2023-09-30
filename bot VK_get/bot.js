@@ -4,12 +4,12 @@ const { writeToFile, readFile } = require('./utils');
 //ввести данные.
 const groupId = `richie.r.dragon`;
 const nameFile = `${groupId}.json`;
-const filePath = `./Programming-Project/bot VK_get/target/${nameFile}`;
-const filePath1 = `./Programming-Project/bot VK_get/target`;
+const filePath = `c:/Programming Project/Programming-Project/bot VK_get/target/${nameFile}`;
+const filePath1 = `c:/Programming Project/Programming-Project/bot VK_get/target`;
 exports.filePath = filePath;
 
-compareMembersData()
-
+exports.compareMembersData = compareMembersData;
+//compareMembersData()
 async function compareMembersData() {
     let folder = await creatingFolder();
     let newData = await getNewGroupMembersData();
@@ -24,7 +24,7 @@ async function compareMembersData() {
     console.log(gettingResultsNoSubscribers(unSubscribed))
 
     writeToFile(filePath, newData)
-}
+    }
 
 async function creatingFolder() {
      if (!fs.existsSync(filePath1)){
