@@ -36,14 +36,7 @@ function outputMessage() {
     bot.on('callback_query', msg => {//ответ на кнопку '/list'
         const data = msg.data;
         const chatId = msg.message.chat.id;
-        switch (data) {
-            case "8989":
-                bot.sendMessage(chatId, `8888888`);
-                break;
-            case "89":
-                bot.sendMessage(chatId, `77777777`);
-                break;
-        }
+        return bot.sendMessage(chatId, `${data}`)
     })
 }
 
