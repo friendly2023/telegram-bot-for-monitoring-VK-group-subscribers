@@ -4,7 +4,7 @@ const TelegramApi = require('node-telegram-bot-api')
 const bot = new TelegramApi(token, { polling: true })
 
 //редактируемое
-const fileTarget = './Programming-Project/bot VK_get/target/';//путь до папки /target
+const fileTarget = '../bot VK_get/target/';//путь до папки /target
 
 bot.setMyCommands([
     {
@@ -48,17 +48,18 @@ function outputMessage() {
 }
 
 const arrayCommunities = {//подключение для кнопок '/list'
-    reply_markup: JSON.stringify({
-        inline_keyboard: [
-            [{ text: `5454`, callback_data: '8989' }],
-            [{ text: 'текст', callback_data: '89' }]
-        ]
-    })
+    reply_markup: {
+        inline_keyboard: searchFileTarget()
+    }
 }
 
-function searchFileTarget() {//поиск файлов в папке
-    return fs.readdirSync(fileTarget)
-    // let listFileTarget = fs.readdirSync(fileTarget).forEach(file => {
-    //     console.log(file);
-    //   });
+function searchFileTarget() {//поиск файлов в папке+генерация массива для кнопки
+    let arrayFile=new Array()
+    let i =0
+    while (i<fs.readdirSync(fileTarget).length) {
+        let t=[{ text: `${fs.readdirSync(fileTarget)[i]}`, callback_data: `${fs.readdirSync(fileTarget)[i]}` }]
+        arrayFile.push(t);
+        i++
+    }
+    return arrayFile
 }
