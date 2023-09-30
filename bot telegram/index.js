@@ -38,7 +38,8 @@ function outputMessage() {
     bot.on('callback_query', msg => {//ответ на кнопку '/list'
         //const data = msg.data;
         const chatId = msg.message.chat.id;
-        return bot.sendMessage(chatId, `${compareMembersData.compareMembersData()}`)
+        return compareMembersData.compareMembersData()
+        .then(result => bot.sendMessage(chatId, `${result}`))
     })
 }
 

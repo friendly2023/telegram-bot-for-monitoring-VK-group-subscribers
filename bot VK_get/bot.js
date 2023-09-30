@@ -18,12 +18,18 @@ async function compareMembersData() {
     let newGroupMembersData = getMembersIds(newData)
 
     let subscribed = newGroupMembersData.filter(x => !oldGroupMembersData.includes(x));
-    console.log(gettingResultsSubscribers(subscribed))
+    let subscrib = await gettingResultsSubscribers(subscribed);
+    //console.log(gettingResultsSubscribers(subscribed))
 
     let unSubscribed = oldGroupMembersData.filter(x => !newGroupMembersData.includes(x));
-    console.log(gettingResultsNoSubscribers(unSubscribed))
+    let unSubscrib = await gettingResultsNoSubscribers(unSubscribed);
+    //console.log(gettingResultsNoSubscribers(unSubscribed))
 
     writeToFile(filePath, newData)
+    // let resultat=`${subscrib}
+    //               ${unSubscrib}`
+    return `${subscrib};
+${unSubscrib};`
     }
 
 async function creatingFolder() {
@@ -53,7 +59,7 @@ function getMembersIds(data) {
     return data.response.items.map(item => item.id)
 }
 
-function gettingResultsNoSubscribers(noSubscribers) {
+async function gettingResultsNoSubscribers(noSubscribers) {
     if (noSubscribers.length == 1) {
         return `Отписался: ${noSubscribers}`
     } else if (noSubscribers.length > 1) {
@@ -63,7 +69,7 @@ function gettingResultsNoSubscribers(noSubscribers) {
     }
 }
 
-function gettingResultsSubscribers(subscribers) {
+async function gettingResultsSubscribers(subscribers) {
     if (subscribers.length == 1) {
         return `Подписался: ${subscribers}`
     } else if (subscribers.length > 1) {
