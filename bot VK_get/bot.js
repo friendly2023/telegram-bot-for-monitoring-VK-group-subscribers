@@ -4,8 +4,8 @@ const { writeToFile, readFile } = require('./utils');
 //ввести данные.
 const groupId = `richie.r.dragon`;
 const nameFile = `${groupId}.json`;
-const filePath = `./bot VK_get/target/${nameFile}`;
-const filePath1 = `./bot VK_get/target`;
+const filePath = `./Programming-Project/bot VK_get/target/${nameFile}`;
+const filePath1 = `./Programming-Project/bot VK_get/target`;
 exports.filePath = filePath;
 
 compareMembersData()
