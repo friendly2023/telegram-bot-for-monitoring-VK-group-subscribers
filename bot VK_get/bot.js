@@ -1,11 +1,11 @@
 var fs = require('fs');
-const { serviceKey } = require('./serviceKey');
+const { serviceKey } = require('../serviceKey/vkKey');
 const { writeToFile, readFile } = require('./utils');
 //ввести данные.
 const groupId = `richie.r.dragon`;
 const nameFile = `${groupId}.json`;
-const filePath = `c:/Programming Project/Programming-Project/bot VK_get/target/${nameFile}`;
-const filePath1 = `c:/Programming Project/Programming-Project/bot VK_get/target`;
+const filePath = `./bot VK_get/target/${nameFile}`;
+const filePath1 = `./bot VK_get/target`;
 exports.filePath = filePath;
 
 exports.compareMembersData = compareMembersData;
