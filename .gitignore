@@ -1,1 +1,3 @@
-bot VK_get/serviceKey.js
+bot VK_get/target
+node_modules
+serviceKey
