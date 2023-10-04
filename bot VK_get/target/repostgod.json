@@ -1,0 +1,51 @@
+{
+  "response": {
+    "count": 6,
+    "items": [
+      {
+        "id": 60508566,
+        "first_name": "Павел",
+        "last_name": "Хоботов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 131966717,
+        "first_name": "Владимир",
+        "last_name": "Казимиров",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 133003192,
+        "first_name": "Наталья",
+        "last_name": "Говор",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 133428549,
+        "deactivated": "deleted",
+        "first_name": "DELETED",
+        "last_name": "",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 161308615,
+        "first_name": "Вита",
+        "last_name": "Бузакова",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 177440844,
+        "first_name": "Надя",
+        "last_name": "Кочеткова",
+        "can_access_closed": true,
+        "is_closed": false
+      }
+    ],
+    "next_from": ""
+  }
+}

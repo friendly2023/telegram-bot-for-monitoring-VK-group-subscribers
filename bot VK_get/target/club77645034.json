@@ -1,0 +1,337 @@
+{
+  "response": {
+    "count": 46,
+    "items": [
+      {
+        "id": 11690677,
+        "first_name": "Гоша",
+        "last_name": "Карпов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 12103366,
+        "first_name": "Юра",
+        "last_name": "Володин",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 22330255,
+        "first_name": "Александр",
+        "last_name": "Матвеев",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 31768124,
+        "first_name": "Alex",
+        "last_name": "Rukavkin",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 32742806,
+        "deactivated": "deleted",
+        "first_name": "DELETED",
+        "last_name": "",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 39613878,
+        "first_name": "Сергей",
+        "last_name": "Власов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 41627240,
+        "first_name": "Дмитрий",
+        "last_name": "Богданов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 46061579,
+        "first_name": "Алексей",
+        "last_name": "Антонов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 47457557,
+        "first_name": "Александр",
+        "last_name": "Пузанов",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 48694162,
+        "first_name": "Николай",
+        "last_name": "Барашков",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 60967301,
+        "first_name": "Дмитрий",
+        "last_name": "Донской",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 65627551,
+        "first_name": "Александр",
+        "last_name": "Сметанник",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 65667628,
+        "deactivated": "deleted",
+        "first_name": "DELETED",
+        "last_name": "",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 70545701,
+        "first_name": "Михаил",
+        "last_name": "Симонов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 70600668,
+        "first_name": "Артём",
+        "last_name": "Канаев",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 70819556,
+        "first_name": "Алексей",
+        "last_name": "Логутов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 75513719,
+        "first_name": "Илья",
+        "last_name": "Краснов",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 78481136,
+        "first_name": "Тимофей",
+        "last_name": "Яшин",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 79480331,
+        "first_name": "Алексей",
+        "last_name": "Шиянов",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 86292219,
+        "first_name": "Михаил",
+        "last_name": "Медведев",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 87444917,
+        "first_name": "Макс",
+        "last_name": "Богданов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 94184214,
+        "first_name": "Игорь",
+        "last_name": "Москалев",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 97518010,
+        "first_name": "Pasha",
+        "last_name": "Shurubei",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 107508539,
+        "deactivated": "deleted",
+        "first_name": "DELETED",
+        "last_name": "",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 111383673,
+        "first_name": "Александр",
+        "last_name": "Иванов",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 118622634,
+        "first_name": "Юрий",
+        "last_name": "Княжев",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 119657128,
+        "deactivated": "deleted",
+        "first_name": "DELETED",
+        "last_name": "",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 120231320,
+        "first_name": "Илья",
+        "last_name": "Тимин",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 123309759,
+        "first_name": "Илья",
+        "last_name": "Рахматуллин",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 124291812,
+        "first_name": "Иван",
+        "last_name": "Борисов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 130006148,
+        "first_name": "Павел",
+        "last_name": "Смирнов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 131898344,
+        "deactivated": "deleted",
+        "first_name": "DELETED",
+        "last_name": "",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 131966717,
+        "first_name": "Владимир",
+        "last_name": "Казимиров",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 135194381,
+        "first_name": "Егор",
+        "last_name": "Пухов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 147271960,
+        "first_name": "Сергей",
+        "last_name": "Лебедев",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 150703590,
+        "first_name": "Илья",
+        "last_name": "Смирнов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 156097548,
+        "first_name": "Алексей",
+        "last_name": "Ложков",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 156772007,
+        "first_name": "Александр",
+        "last_name": "Бабочкин",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 160146122,
+        "deactivated": "deleted",
+        "first_name": "DELETED",
+        "last_name": "",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 174662064,
+        "first_name": "Ivan",
+        "last_name": "Matanov",
+        "can_access_closed": false,
+        "is_closed": true
+      },
+      {
+        "id": 215571162,
+        "first_name": "Эльван",
+        "last_name": "Панахов",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 229340479,
+        "first_name": "Михаил",
+        "last_name": "Муравьёв",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 236500625,
+        "first_name": "Алексей",
+        "last_name": "Гаранин",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 241661954,
+        "deactivated": "deleted",
+        "first_name": "DELETED",
+        "last_name": "",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 314744100,
+        "first_name": "Даниэль",
+        "last_name": "Ковров",
+        "can_access_closed": true,
+        "is_closed": false
+      },
+      {
+        "id": 705069612,
+        "first_name": "Павел",
+        "last_name": "Филиппов",
+        "can_access_closed": true,
+        "is_closed": false
+      }
+    ],
+    "next_from": ""
+  }
+}
