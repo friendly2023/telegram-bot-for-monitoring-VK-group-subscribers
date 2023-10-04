@@ -5,8 +5,8 @@ const { writeToFile, readFile } = require('./utils');
 const groupId = `richie.r.dragon`;
 const nameFile = `${groupId}.json`;
 const filePath = `./bot VK_get/target/${nameFile}`;
-const filePath1 = `./bot VK_get/target`;
-exports.filePath = filePath;
+const fileTarget = `./bot VK_get/target`;
+exports.fileTarget = fileTarget;
 
 exports.compareMembersData = compareMembersData;
 //compareMembersData()
@@ -33,8 +33,8 @@ ${unSubscrib};`
     }
 
 async function creatingFolder() {
-     if (!fs.existsSync(filePath1)){
-     fs.mkdirSync(filePath1);
+     if (!fs.existsSync(fileTarget)){
+     fs.mkdirSync(fileTarget);
  } 
  }
 
