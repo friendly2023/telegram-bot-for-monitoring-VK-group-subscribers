@@ -3,17 +3,17 @@ const { serviceKey } = require('../serviceKey/vkKey');
 const { writeToFile, readFile } = require('./utils');
 //ввести данные.
 //groupId = `richie.r.dragon`;
-const { groupId } = require('../index.js');
-const nameFile = `${groupId}.json`;
-const filePath = `./bot VK_get/target/${nameFile}`;
 const fileTarget = `./bot VK_get/target`;
 exports.fileTarget = fileTarget;
 
 exports.compareMembersData = compareMembersData;
 //compareMembersData()
-async function compareMembersData() {
+async function compareMembersData(groupId) {
+    const nameFile = `${groupId}.json`;
+    const filePath = `./bot VK_get/target/${nameFile}`;
+    
     let folder = await creatingFolder();
-    let newData = await getNewGroupMembersData();
+    let newData = await getNewGroupMembersData(groupId);
     let oldGroupMembersData = getOldGroupMembersDataFromFile(filePath)
 
     let newGroupMembersData = getMembersIds(newData)
@@ -39,7 +39,7 @@ async function creatingFolder() {
  } 
  }
 
-async function getNewGroupMembersData() {
+async function getNewGroupMembersData(groupId) {
     return fetch("https://api.vk.com/method/groups.getMembers", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
