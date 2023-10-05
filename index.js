@@ -38,9 +38,8 @@ function outputMessage() {
 
     bot.on('callback_query', msg => {//ответ на кнопку '/list'
         const groupId = msg.data;
-        exports.groupId = groupId;
         const chatId = msg.message.chat.id;
-        return compareMembersData.compareMembersData()
+        return compareMembersData.compareMembersData(groupId)
         .then(result => bot.sendMessage(chatId, `${result}`))
     })
 }
