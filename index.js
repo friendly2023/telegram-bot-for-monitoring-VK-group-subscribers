@@ -3,7 +3,7 @@ const fs = require('fs')
 const { token } = require('./serviceKey/telegramKey.js');
 const TelegramApi = require('node-telegram-bot-api')
 const bot = new TelegramApi(token, { polling: true })
-const compareMembersData = require('c:/Programming Project/Programming-Project/bot VK_get/bot');
+const compareMembersData = require('./bot VK_get/bot');
 
 //редактируемое
 const fileTarget = './bot VK_get/target/';//путь до папки /target
