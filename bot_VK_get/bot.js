@@ -3,7 +3,7 @@ const { serviceKey } = require('../serviceKey/vkKey');
 const { writeToFile, readFile } = require('./utils');
 //ввести данные.
 //groupId = `richie.r.dragon`;
-const fileTarget = `./bot VK_get/target`;
+const fileTarget = `./target`;
 exports.fileTarget = fileTarget;
 
 exports.compareMembersData = compareMembersData;
@@ -11,7 +11,7 @@ exports.compareMembersData = compareMembersData;
 async function compareMembersData(groupId) {
     const nameFile = `${groupId}.json`;
     const filePath = `./bot VK_get/target/${nameFile}`;
-    
+
     let folder = await creatingFolder();
     let newData = await getNewGroupMembersData(groupId);
     let oldGroupMembersData = getOldGroupMembersDataFromFile(filePath)
