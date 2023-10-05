@@ -2,7 +2,8 @@ var fs = require('fs');
 const { serviceKey } = require('../serviceKey/vkKey');
 const { writeToFile, readFile } = require('./utils');
 //ввести данные.
-const groupId = `richie.r.dragon`;
+//groupId = `richie.r.dragon`;
+const { groupId } = require('../index.js');
 const nameFile = `${groupId}.json`;
 const filePath = `./bot VK_get/target/${nameFile}`;
 const fileTarget = `./bot VK_get/target`;

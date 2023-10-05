@@ -37,7 +37,8 @@ function outputMessage() {
     })
 
     bot.on('callback_query', msg => {//ответ на кнопку '/list'
-        //const data = msg.data;
+        const groupId = msg.data;
+        exports.groupId = groupId;
         const chatId = msg.message.chat.id;
         return compareMembersData.compareMembersData()
         .then(result => bot.sendMessage(chatId, `${result}`))
@@ -54,7 +55,7 @@ function searchFileTarget() {//поиск файлов в папке+генер�
     let arrayFile=new Array()
     let i =0
     while (i<fs.readdirSync(fileTarget).length) {
-        let t=[{ text: `${fs.readdirSync(fileTarget)[i]}`, callback_data: `${fs.readdirSync(fileTarget)[i]}` }]
+        let t=[{ text: `${fs.readdirSync(fileTarget)[i].slice(0,-5)}`, callback_data: `${fs.readdirSync(fileTarget)[i].slice(0,-5)}` }]
         arrayFile.push(t);
         i++
     }
