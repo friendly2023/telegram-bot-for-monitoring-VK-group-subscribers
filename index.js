@@ -6,6 +6,7 @@ const TelegramApi = require('node-telegram-bot-api')
 const bot = new TelegramApi(token, { polling: true })
 const compareMembersData = require('./bot_VK_get/bot.js');
 const addingNewCommunity = require('./bot_VK_get/bot.js');
+const getCommunityName = require('./bot_VK_get/bot.js');
 
 //редактируемое
 //const fileTarget = './bot VK_get/target/';//путь до папки /target

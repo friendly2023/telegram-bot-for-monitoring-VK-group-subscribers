@@ -8,6 +8,7 @@ exports.fileTarget = fileTarget;
 
 exports.compareMembersData = compareMembersData;
 exports.addingNewCommunity = addingNewCommunity;
+exports.getCommunityName = getCommunityName;
 //compareMembersData()
 async function compareMembersData(groupId) {
     const nameFile = `${groupId}.json`;
