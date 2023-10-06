@@ -10,7 +10,7 @@ exports.compareMembersData = compareMembersData;
 //compareMembersData()
 async function compareMembersData(groupId) {
     const nameFile = `${groupId}.json`;
-    const filePath = `./bot VK_get/target/${nameFile}`;
+    const filePath = `./target/${nameFile}`;
 
     let folder = await creatingFolder();
     let newData = await getNewGroupMembersData(groupId);
