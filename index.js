@@ -48,6 +48,10 @@ function outputMessage() {
             return compareMembersData.addingNewCommunity(groupId)
             .then(result => bot.sendMessage(chatId, `${result}`));
         }
+        if (text === '7') {
+            return compareMembersData.getCommunityName(`public222303599`)
+        .then(result => bot.sendMessage(chatId, `${result}`))
+        }
         return bot.sendMessage(chatId, `Хз о чем ты..`);
     })
 
