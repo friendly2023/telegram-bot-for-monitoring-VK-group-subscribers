@@ -36,7 +36,7 @@ function outputMessage() {
             return bot.sendMessage(chatId, `Добро пожаловать ${msg.from.first_name}`);
         }
         if (text === '/communities') {
-            return bot.sendMessage(chatId, `Список сообществ: `, arrayCommunities);
+            return bot.sendMessage(chatId, `Список сообществ: `, creatureArrayCommunities());
         }
         if (text === '/new') {
             return bot.sendMessage(chatId, `Введите ID сообщества в формате:
@@ -53,15 +53,19 @@ function outputMessage() {
     bot.on('callback_query', msg => {//ответ на кнопку '/communities'
         const groupId = msg.data;
         const chatId = msg.message.chat.id;
+        creatureArrayCommunities();
         return compareMembersData.compareMembersData(groupId)
         .then(result => bot.sendMessage(chatId, `${result}`))
     })
 }
 
-const arrayCommunities = {//подключение для кнопок '/communities'
-    reply_markup: {
-        inline_keyboard: searchFileTarget()
+function creatureArrayCommunities() {//подключение для кнопок '/communities'
+    arrayCommunities = {
+        reply_markup: {
+            inline_keyboard: searchFileTarget()
+        }
     }
+    return arrayCommunities
 }
 
 function searchFileTarget() {//поиск файлов в папке+генерация массива для кнопки
