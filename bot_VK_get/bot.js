@@ -2,17 +2,18 @@ var fs = require('fs');
 const { serviceKey } = require('../serviceKey/vkKey');
 const { writeToFile, readFile } = require('./utils');
 //ввести данные.
-const groupId = `richie.r.dragon`;
-const nameFile = `${groupId}.json`;
-const filePath = `./bot VK_get/target/${nameFile}`;
-const filePath1 = `./bot VK_get/target`;
-exports.filePath = filePath;
+//groupId = `richie.r.dragon`;
+const fileTarget = `./target`;
+exports.fileTarget = fileTarget;
 
 exports.compareMembersData = compareMembersData;
 //compareMembersData()
-async function compareMembersData() {
+async function compareMembersData(groupId) {
+    const nameFile = `${groupId}.json`;
+    const filePath = `./target/${nameFile}`;
+
     let folder = await creatingFolder();
-    let newData = await getNewGroupMembersData();
+    let newData = await getNewGroupMembersData(groupId);
     let oldGroupMembersData = getOldGroupMembersDataFromFile(filePath)
 
     let newGroupMembersData = getMembersIds(newData)
@@ -33,12 +34,12 @@ ${unSubscrib};`
     }
 
 async function creatingFolder() {
-     if (!fs.existsSync(filePath1)){
-     fs.mkdirSync(filePath1);
+     if (!fs.existsSync(fileTarget)){
+     fs.mkdirSync(fileTarget);
  } 
  }
 
-async function getNewGroupMembersData() {
+async function getNewGroupMembersData(groupId) {
     return fetch("https://api.vk.com/method/groups.getMembers", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",

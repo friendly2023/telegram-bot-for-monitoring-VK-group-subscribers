@@ -1,12 +1,13 @@
 const fs = require('fs')
 //const token = '6510713266:AAEaFfeGn4Kna6hs7qGf76GZD6bRlfR_SA8'
 const { token } = require('./serviceKey/telegramKey.js');
+const { fileTarget } = require('./bot_VK_get/bot.js');
 const TelegramApi = require('node-telegram-bot-api')
 const bot = new TelegramApi(token, { polling: true })
-const compareMembersData = require('c:/Programming Project/Programming-Project/bot VK_get/bot');
+const compareMembersData = require('./bot_VK_get/bot.js');
 
 //редактируемое
-const fileTarget = './bot VK_get/target/';//путь до папки /target
+//const fileTarget = './bot VK_get/target/';//путь до папки /target
 
 bot.setMyCommands([
     {
@@ -36,9 +37,9 @@ function outputMessage() {
     })
 
     bot.on('callback_query', msg => {//ответ на кнопку '/list'
-        //const data = msg.data;
+        const groupId = msg.data;
         const chatId = msg.message.chat.id;
-        return compareMembersData.compareMembersData()
+        return compareMembersData.compareMembersData(groupId)
         .then(result => bot.sendMessage(chatId, `${result}`))
     })
 }
@@ -53,7 +54,7 @@ function searchFileTarget() {//поиск файлов в папке+генер�
     let arrayFile=new Array()
     let i =0
     while (i<fs.readdirSync(fileTarget).length) {
-        let t=[{ text: `${fs.readdirSync(fileTarget)[i]}`, callback_data: `${fs.readdirSync(fileTarget)[i]}` }]
+        let t=[{ text: `${fs.readdirSync(fileTarget)[i].slice(0,-5)}`, callback_data: `${fs.readdirSync(fileTarget)[i].slice(0,-5)}` }]
         arrayFile.push(t);
         i++
     }
