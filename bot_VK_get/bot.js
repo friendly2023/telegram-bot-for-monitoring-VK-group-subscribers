@@ -7,6 +7,7 @@ const fileTarget = `./target`;
 exports.fileTarget = fileTarget;
 
 exports.compareMembersData = compareMembersData;
+exports.addingNewCommunity = addingNewCommunity;
 //compareMembersData()
 async function compareMembersData(groupId) {
     const nameFile = `${groupId}.json`;
@@ -31,13 +32,23 @@ async function compareMembersData(groupId) {
     //               ${unSubscrib}`
     return `${subscrib};
 ${unSubscrib};`
-    }
+}
+
+async function addingNewCommunity(groupId) {
+    const nameFile = `${groupId}.json`;
+    const filePath = `./target/${nameFile}`;
+
+    let folder = await creatingFolder();
+    let newData = await getNewGroupMembersData(groupId);
+    writeToFile(filePath, newData)
+    return `Сообщество добавлено`
+}
 
 async function creatingFolder() {
-     if (!fs.existsSync(fileTarget)){
-     fs.mkdirSync(fileTarget);
- } 
- }
+    if (!fs.existsSync(fileTarget)) {
+        fs.mkdirSync(fileTarget);
+    }
+}
 
 async function getNewGroupMembersData(groupId) {
     return fetch("https://api.vk.com/method/groups.getMembers", {
