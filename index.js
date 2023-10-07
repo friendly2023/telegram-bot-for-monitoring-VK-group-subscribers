@@ -49,7 +49,7 @@ function outputMessage() {
             .then(result => bot.sendMessage(chatId, `${result}`));
         }
         if (text === '7') {
-            return compareMembersData.getCommunityName(`public222303599`)
+            return getCommunityName.getCommunityName(`${fs.readdirSync(fileTarget)[0].slice(0,-5)}`)
         .then(result => bot.sendMessage(chatId, `${result}`))
         }
         return bot.sendMessage(chatId, `Хз о чем ты..`);
@@ -77,7 +77,9 @@ function searchFileTarget() {//поиск файлов в папке+генер�
     let arrayFile=new Array()
     let i =0
     while (i<fs.readdirSync(fileTarget).length) {
-        let t=[{ text: `${fs.readdirSync(fileTarget)[i].slice(0,-5)}`, callback_data: `${fs.readdirSync(fileTarget)[i].slice(0,-5)}` }]
+        let a =fs.readdirSync(fileTarget)[i].slice(0,-5)
+        let b=getCommunityName.getCommunityName(`${a}`)
+        let t=[{ text: `${b}`, callback_data: `${a}` }]
         arrayFile.push(t);
         i++
     }
