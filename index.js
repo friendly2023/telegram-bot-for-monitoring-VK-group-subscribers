@@ -78,9 +78,9 @@ function searchFileTarget() {//поиск файлов в папке+генер�
     let i =0
     while (i<fs.readdirSync(fileTarget).length) {
         let a =fs.readdirSync(fileTarget)[i].slice(0,-5)
-        let b=getCommunityName.getCommunityName(`${a}`)
-        let t=[{ text: `${b}`, callback_data: `${a}` }]
-        arrayFile.push(t);
+        let b=getCommunityName.getCommunityName(`${a}`).then(res => `${[{ text: `${res}`, callback_data: `${a}` }]}`)
+        //let t=[{ text: `${b}`, callback_data: `${a}` }]
+        arrayFile.push(b);
         i++
     }
     return arrayFile
