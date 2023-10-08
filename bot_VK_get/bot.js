@@ -1,14 +1,13 @@
 var fs = require('fs');
 const { serviceKey } = require('../serviceKey/vkKey');
 const { writeToFile, readFile } = require('./utils');
-//ввести данные.
-//groupId = `richie.r.dragon`;
 const fileTarget = `./target`;
 exports.fileTarget = fileTarget;
 
 exports.compareMembersData = compareMembersData;
 exports.addingNewCommunity = addingNewCommunity;
-//compareMembersData()
+exports.getCommunityName = getCommunityName;
+
 async function compareMembersData(groupId) {
     const nameFile = `${groupId}.json`;
     const filePath = `./target/${nameFile}`;
@@ -21,15 +20,12 @@ async function compareMembersData(groupId) {
 
     let subscribed = newGroupMembersData.filter(x => !oldGroupMembersData.includes(x));
     let subscrib = await gettingResultsSubscribers(subscribed);
-    //console.log(gettingResultsSubscribers(subscribed))
-
+    
     let unSubscribed = oldGroupMembersData.filter(x => !newGroupMembersData.includes(x));
     let unSubscrib = await gettingResultsNoSubscribers(unSubscribed);
-    //console.log(gettingResultsNoSubscribers(unSubscribed))
-
+    
     writeToFile(filePath, newData)
-    // let resultat=`${subscrib}
-    //               ${unSubscrib}`
+
     return `${subscrib};
 ${unSubscrib};`
 }
@@ -51,6 +47,7 @@ async function creatingFolder() {
 }
 
 async function getNewGroupMembersData(groupId) {
+    //console.log("Беру данные из ВК для ", groupId)
     return fetch("https://api.vk.com/method/groups.getMembers", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -63,7 +60,29 @@ async function getNewGroupMembersData(groupId) {
         .then(response => response.json())
 }
 
+async function getCommunityName(groupId) {
+    //console.log("Беру из ВК инфу о ", groupId)
+    return fetch("https://api.vk.com/method/groups.getById", {
+        "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "accept": "*/*",
+            "accept-language": "ru-RU,ru;q=0.9,en-GB;q=0.8,en;q=0.7,en-US;q=0.6",
+        },
+        "body": `group_id=${groupId}&access_token=${serviceKey}&v=5.131&fields=members_count`,
+        "method": "POST"
+    })
+        .then(response => response.json())
+        .then(data => {
+            const communityName = data.response[0].name;
+            return `${communityName}`;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+}
+
 function getOldGroupMembersDataFromFile(path) {
+    //console.log("Беру данные из файла для ", path)
     return getMembersIds(readFile(path))
 }
 
