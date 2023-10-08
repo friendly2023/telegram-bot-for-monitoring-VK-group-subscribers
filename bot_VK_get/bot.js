@@ -1,15 +1,13 @@
 var fs = require('fs');
 const { serviceKey } = require('../serviceKey/vkKey');
 const { writeToFile, readFile } = require('./utils');
-//ввести данные.
-//groupId = `richie.r.dragon`;
 const fileTarget = `./target`;
 exports.fileTarget = fileTarget;
 
 exports.compareMembersData = compareMembersData;
 exports.addingNewCommunity = addingNewCommunity;
 exports.getCommunityName = getCommunityName;
-//compareMembersData()
+
 async function compareMembersData(groupId) {
     const nameFile = `${groupId}.json`;
     const filePath = `./target/${nameFile}`;
@@ -22,15 +20,12 @@ async function compareMembersData(groupId) {
 
     let subscribed = newGroupMembersData.filter(x => !oldGroupMembersData.includes(x));
     let subscrib = await gettingResultsSubscribers(subscribed);
-    //console.log(gettingResultsSubscribers(subscribed))
-
+    
     let unSubscribed = oldGroupMembersData.filter(x => !newGroupMembersData.includes(x));
     let unSubscrib = await gettingResultsNoSubscribers(unSubscribed);
-    //console.log(gettingResultsNoSubscribers(unSubscribed))
-
+    
     writeToFile(filePath, newData)
-    // let resultat=`${subscrib}
-    //               ${unSubscrib}`
+
     return `${subscrib};
 ${unSubscrib};`
 }
@@ -52,7 +47,7 @@ async function creatingFolder() {
 }
 
 async function getNewGroupMembersData(groupId) {
-    console.log("Беру данные из ВК для ", groupId)
+    //console.log("Беру данные из ВК для ", groupId)
     return fetch("https://api.vk.com/method/groups.getMembers", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -66,7 +61,7 @@ async function getNewGroupMembersData(groupId) {
 }
 
 async function getCommunityName(groupId) {
-    console.log("Беру из ВК инфу о ", groupId)
+    //console.log("Беру из ВК инфу о ", groupId)
     return fetch("https://api.vk.com/method/groups.getById", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -87,7 +82,7 @@ async function getCommunityName(groupId) {
 }
 
 function getOldGroupMembersDataFromFile(path) {
-    console.log("Беру данные из файла для ", path)
+    //console.log("Беру данные из файла для ", path)
     return getMembersIds(readFile(path))
 }
 
