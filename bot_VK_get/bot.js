@@ -52,6 +52,7 @@ async function creatingFolder() {
 }
 
 async function getNewGroupMembersData(groupId) {
+    console.log("Беру данные из ВК для ", groupId)
     return fetch("https://api.vk.com/method/groups.getMembers", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -65,6 +66,7 @@ async function getNewGroupMembersData(groupId) {
 }
 
 async function getCommunityName(groupId) {
+    console.log("Беру из ВК инфу о ", groupId)
     return fetch("https://api.vk.com/method/groups.getById", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -85,6 +87,7 @@ async function getCommunityName(groupId) {
 }
 
 function getOldGroupMembersDataFromFile(path) {
+    console.log("Беру данные из файла для ", path)
     return getMembersIds(readFile(path))
 }
 
