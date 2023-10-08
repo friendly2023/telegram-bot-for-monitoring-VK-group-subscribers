@@ -24,6 +24,7 @@ outputMessage()
 function outputMessage() {
     bot.on('message', async msg => {
         //console.log(msg)
+        //console.log(msg.from.id)
         const text = msg.text;
         const chatId = msg.chat.id;
 
