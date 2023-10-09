@@ -24,7 +24,6 @@ outputMessage()
 function outputMessage() {
     bot.on('message', async msg => {
         //console.log(msg)
-        //console.log(msg.from.id)
         const text = msg.text;
         const chatId = msg.chat.id;
 
@@ -50,7 +49,7 @@ function outputMessage() {
     bot.on('callback_query', async msg => {//ответ на кнопку '/communities'
         const groupId = msg.data;
         const chatId = msg.message.chat.id;
-        const result = await communitiesUtils.compareMembersData(groupId,chatId);
+        const result = await communitiesUtils.compareMembersData(groupId, chatId);
         return await bot.sendMessage(chatId, `${result}`);
     })
 }
@@ -60,14 +59,13 @@ async function creatureArrayCommunities(chatId) {//подключение для
 }
 
 async function searchFileTarget(chatId) {//поиск файлов в папке+генерация массива для кнопки
-    let communitiesList = fs.readdirSync(fileTarget)
+    let communitiesList = fs.readdirSync(`${fileTarget}/${chatId}`)
     let buttonsArray = []
     for (c of communitiesList) {
-        if (c.split('+,+')[0] == chatId) {
-            communityId = c.split('+,+')[1].slice(0, -5);
-            cName = await communitiesUtils.getCommunityName(communityId)
-            buttonsArray.push([{ text: cName, callback_data: communityId }])
-        }
+        communityId = c.slice(0, -5)
+        //console.log(communityId)
+        cName = await communitiesUtils.getCommunityName(communityId)
+        buttonsArray.push([{ text: cName, callback_data: communityId }])
     }
     return buttonsArray
 }
