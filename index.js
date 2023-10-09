@@ -32,7 +32,7 @@ function outputMessage() {
         }
         if (text === '/communities') {
             return await bot.sendMessage(chatId, `Список сообществ: `,
-                await creatureArrayCommunities());
+                await creatureArrayCommunities(chatId));
         }
         if (text === '/new') {
             return await bot.sendMessage(chatId, `Введите ID сообщества в формате:
@@ -54,12 +54,12 @@ function outputMessage() {
     })
 }
 
-async function creatureArrayCommunities() {//подключение для кнопок '/communities'
-    return { reply_markup: { inline_keyboard: await searchFileTarget() } }
+async function creatureArrayCommunities(chatId) {//подключение для кнопок '/communities'
+    return { reply_markup: { inline_keyboard: await searchFileTarget(chatId) } }
 }
 
-async function searchFileTarget() {//поиск файлов в папке+генерация массива для кнопки
-    let communitiesList = fs.readdirSync(fileTarget)
+async function searchFileTarget(chatId) {//поиск файлов в папке+генерация массива для кнопки
+    let communitiesList = fs.readdirSync(`${fileTarget}/${chatId}`)
     let buttonsArray = []
     for (c of communitiesList) {
         communityId = c.slice(0, -5)
