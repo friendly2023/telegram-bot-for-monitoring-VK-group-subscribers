@@ -10,7 +10,7 @@ exports.getCommunityName = getCommunityName;
 
 async function compareMembersData(groupId) {
     const nameFile = `${groupId}.json`;
-    const filePath = `./target/${nameFile}`;
+    const filePath = `${fileTarget}/${nameFile}`;
 
     let folder = await creatingFolder();
     let newData = await getNewGroupMembersData(groupId);
@@ -32,7 +32,7 @@ ${unSubscrib};`
 
 async function addingNewCommunity(groupId) {
     const nameFile = `${groupId}.json`;
-    const filePath = `./target/${nameFile}`;
+    const filePath = `${fileTarget}/${nameFile}`;
 
     let folder = await creatingFolder();
     let newData = await getNewGroupMembersData(groupId);
