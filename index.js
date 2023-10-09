@@ -40,7 +40,7 @@ function outputMessage() {
         }
         if (text.slice(0, 3) == 'ID:') {
             groupId = text.slice(3);
-            return await communitiesUtils.addingNewCommunity(groupId)
+            return await communitiesUtils.addingNewCommunity(groupId, chatId)
                 .then(result => bot.sendMessage(chatId, `${result}`));
         }
         return await bot.sendMessage(chatId, `Хз о чем ты..`);
@@ -49,7 +49,7 @@ function outputMessage() {
     bot.on('callback_query', async msg => {//ответ на кнопку '/communities'
         const groupId = msg.data;
         const chatId = msg.message.chat.id;
-        const result = await communitiesUtils.compareMembersData(groupId);
+        const result = await communitiesUtils.compareMembersData(groupId, chatId);
         return await bot.sendMessage(chatId, `${result}`);
     })
 }

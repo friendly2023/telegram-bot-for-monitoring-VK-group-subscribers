@@ -8,11 +8,11 @@ exports.compareMembersData = compareMembersData;
 exports.addingNewCommunity = addingNewCommunity;
 exports.getCommunityName = getCommunityName;
 
-async function compareMembersData(groupId) {
+async function compareMembersData(groupId, chatId) {
     const nameFile = `${groupId}.json`;
-    const filePath = `${fileTarget}/${nameFile}`;
+    const filePath = `${fileTarget}/${chatId}/${nameFile}`;
 
-    let folder = await creatingFolder();
+    let folder = await creatingFolder(chatId);
     let newData = await getNewGroupMembersData(groupId);
     let oldGroupMembersData = getOldGroupMembersDataFromFile(filePath)
 
@@ -30,19 +30,19 @@ async function compareMembersData(groupId) {
 ${unSubscrib};`
 }
 
-async function addingNewCommunity(groupId) {
+async function addingNewCommunity(groupId, chatId) {
     const nameFile = `${groupId}.json`;
-    const filePath = `${fileTarget}/${nameFile}`;
+    const filePath = `${fileTarget}/${chatId}/${nameFile}`;
 
-    let folder = await creatingFolder();
+    let folder = await creatingFolder(chatId);
     let newData = await getNewGroupMembersData(groupId);
     writeToFile(filePath, newData)
     return `Сообщество добавлено`
 }
 
-async function creatingFolder() {
-    if (!fs.existsSync(fileTarget)) {
-        fs.mkdirSync(fileTarget);
+async function creatingFolder(chatId) {
+    if (!fs.existsSync(`${fileTarget}/${chatId}`)) {
+        fs.mkdirSync(`${fileTarget}/${chatId}`);
     }
 }
 
