@@ -9,11 +9,11 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
 
 //запросы на создание таблиц в БД
 let tableUsers = `CREATE TABLE users (
-  telegramId varchar(20),
+  telegramId varchar(20) UNIQUE,
   firstName varchar(100)
 );`;
 let tadleCommunities = `CREATE TABLE communities (
-  communityId varchar(100),
+  communityId varchar(100) UNIQUE,
   title varchar(100)
 );`;
 let tableUsersToCommunities = `CREATE TABLE usersToCommunities (
@@ -23,7 +23,7 @@ let tableUsersToCommunities = `CREATE TABLE usersToCommunities (
 let tableCommunitiesList = `CREATE TABLE communitiesList (
   communityId varchar(100),
   recordingTime data,
-  jsonFollowersList mediumtext
+  jsonFollowersList mediumtext UNIQUE
 );`;
 
 db.serialize(() => {
