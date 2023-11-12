@@ -8,11 +8,8 @@ let db = new sqlite3.Database('./db/testDB.db', (err) => {
   console.log('Connected to the chinook database.');
 });
 
-let sql = `CREATE TABLE Persons (
-  LastName varchar(255),
-  FirstName varchar(255),
-  tttt LONGTEXT
-);`;
+let sql = `INSERT INTO Persons
+VALUES ('ma889i', 'l009x', '7757')`
 
 db.serialize(() => {
   db.each(sql, (err) => {
