@@ -4,6 +4,7 @@ const { fileTarget } = require('./bot_VK_get/bot.js');
 const TelegramApi = require('node-telegram-bot-api')
 const bot = new TelegramApi(token, { polling: true })
 const communitiesUtils = require('./bot_VK_get/bot.js');
+const writingToDB = require('./database/writingToTableDB.js');
 
 bot.setMyCommands([
     {
@@ -40,8 +41,10 @@ function outputMessage() {
         }
         if (text.slice(0, 3) == 'ID:') {
             groupId = text.slice(3);
-            return await communitiesUtils.addingNewCommunity(groupId, chatId)
+            return await writingToDB.writeToFileSQL(chatId, msg.from.first_name, groupId)
                 .then(result => bot.sendMessage(chatId, `${result}`));
+            // return await communitiesUtils.addingNewCommunity(groupId, chatId)
+            //     .then(result => bot.sendMessage(chatId, `${result}`));
         }
         return await bot.sendMessage(chatId, `Хз о чем ты..`);
     })

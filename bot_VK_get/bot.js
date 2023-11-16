@@ -7,6 +7,7 @@ exports.fileTarget = fileTarget;
 exports.compareMembersData = compareMembersData;
 exports.addingNewCommunity = addingNewCommunity;
 exports.getCommunityName = getCommunityName;
+exports.getNewGroupMembersData = getNewGroupMembersData;
 
 async function compareMembersData(groupId, chatId) {
     const nameFile = `${groupId}.json`;
@@ -58,6 +59,7 @@ async function getNewGroupMembersData(groupId) {
         "method": "POST"
     })
         .then(response => response.json())
+        .then(data => JSON.stringify(data))
 }
 
 async function getCommunityName(groupId) {
