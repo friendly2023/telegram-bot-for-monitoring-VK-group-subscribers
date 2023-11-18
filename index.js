@@ -72,16 +72,14 @@ async function creatureArrayCommunities(chatId) {//подключение для
 }
 
 async function searchFileTarget(chatId) {//поиск файлов в папке+генерация массива для кнопки//поиск в бд+генерация массива для кнопки
-    return await requestsToDB.requestByUser(chatId)
-    
-    
-    // let communitiesList = fs.readdirSync(`${fileTarget}/${chatId}`)
-    // let buttonsArray = []
-    // for (c of communitiesList) {
-    //     communityId = c.slice(0, -5)
-    //     //console.log(communityId)
-    //     cName = await communitiesUtils.getCommunityName(communityId)
-    //     buttonsArray.push([{ text: cName, callback_data: communityId }])
-    // }
-    // return buttonsArray
+    let idArray=await requestsToDB.creatingIdArray(chatId)
+    console.log(idArray)
+    let titleArray=await requestsToDB.creatingTitleArray(chatId)
+    console.log(titleArray)
+    let buttonsArray = []
+    for (let i = 0; i < idArray.length; i++) {
+        buttonsArray.push([{ text: titleArray[i], callback_data: idArray[i] }])
+    }
+    requestsToDB.closeDatabase()
+    return buttonsArray
 }

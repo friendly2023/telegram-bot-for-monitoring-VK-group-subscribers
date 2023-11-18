@@ -7,20 +7,37 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
     }
 });
 
-exports.requestByUser = requestByUser;
+exports.creatingIdArray = creatingIdArray;
+exports.creatingTitleArray = creatingTitleArray;
+exports.closeDatabase = closeDatabase;
 
+//(async () => console.log(await creatingIdArray('412993464')))()
 
-(async () => console.log(await requestByUser('412993464')))()
-
-async function requestByUser(telegramId) {//массив для формирования кнопки
-    let selectResult = await resultSelect(telegramId)
-    let preparation = await preparationData(selectResult)
-    closeDatabase()
-    return preparation
+async function creatingIdArray(telegramId) {//создание массива id сообществ
+    let arrayDataCommunitiesTitleCommunityId = await requestByUser(telegramId)
+    let communitiesList=[]
+    for (let i = 0; i < arrayDataCommunitiesTitleCommunityId.length; i++) {
+        communitiesList.push(arrayDataCommunitiesTitleCommunityId[i].communityId)   
+    }
+    return communitiesList
 }
 
-function resultSelect(telegramId) {
-    let sql = `SELECT c.title
+async function creatingTitleArray(telegramId) {//создание массива названий сообществ
+    let arrayDataCommunitiesTitleCommunityId = await requestByUser(telegramId)
+    let communitiesList=[]
+    for (let i = 0; i < arrayDataCommunitiesTitleCommunityId.length; i++) {
+        communitiesList.push(arrayDataCommunitiesTitleCommunityId[i].title)   
+    }
+    return communitiesList
+}
+
+async function requestByUser(telegramId) {//вывод запроса в переменную
+    let selectResult = await resultSelect(telegramId)
+    return selectResult
+}
+
+function resultSelect(telegramId) {//запрос
+    let sql = `SELECT c.title, c.communityId
     FROM usersToCommunities as utc
     left join communities as c
     on utc.communityId=c.communityId
@@ -41,12 +58,3 @@ function resultSelect(telegramId) {
 function closeDatabase() {
     db.close()
 }
-
-async function preparationData(selectResult) {
-    let communitiesList=[]
-    for (let i = 0; i < selectResult.length; i++) {
-        communitiesList.push(selectResult[i].title)   
-    }
-    return communitiesList
-}
-
