@@ -23,11 +23,11 @@ exports.writeToFileSQL = writeToFileSQL;
 
 async function writeToFileSQL(telegramId, firstName, communityId) {
   let newDataGroup = await communitiesUtils.getNewGroupMembersData(communityId);
-  console.log(newDataGroup)
+  //console.log(newDataGroup)
   let newNameGroup = await communitiesUtils.getCommunityName(communityId);
-  console.log(newNameGroup)
+  //console.log(newNameGroup)
   let dataInSQL = await writeToSQL(telegramId, firstName, newDataGroup, newNameGroup, communityId);
-  return `Сообщество добавлено в ДБ`
+  return `Данные  по сообществу '${newNameGroup}' добавлены/обновлены`
 }
 
 async function writeToSQL(telegramId, firstName, jsonFollowersList, title, communityId) {

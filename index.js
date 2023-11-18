@@ -17,7 +17,7 @@ bot.setMyCommands([
     },
     {
         command: '/new',
-        description: 'Добавление нового сообщества'
+        description: 'Добавить/обновить данные сообщества'
     }
 ])
 
