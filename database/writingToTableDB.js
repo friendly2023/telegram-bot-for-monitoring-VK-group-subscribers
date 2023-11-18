@@ -50,13 +50,20 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
             title='${title}';`)
 
     
-    // db.run(`INSERT INTO usersToCommunities
-    //         VALUES ('${telegramId}', '${communityId}')`)
+    db.run(`INSERT INTO usersToCommunities(telegramId, communityId)
+            VALUES ('${telegramId}', '${communityId}');`)
+
+    db.run(`DELETE FROM usersToCommunities
+            WHERE rowid NOT IN (
+            SELECT MIN(rowid)
+            FROM usersToCommunities
+            GROUP BY telegramId, communityId)`)      
 
     db.run(`INSERT INTO communitiesList (communityId, recordingTime, jsonFollowersList)
             VALUES ('${communityId}', '${myDate}', '${jsonFollowersList}')
             ON CONFLICT(jsonFollowersList) DO UPDATE SET
             communityId='${communityId}', recordingTime='${myDate}';`)
+  
   })
   db.close((err) => {
     if (err) {
@@ -64,68 +71,3 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
     }
   });
 }
-
-// async function writingToUsers(telegramId, firstName) {
-//   let sql = `INSERT INTO users
-//              VALUES ('${telegramId}', '${firstName}')`
-
-//   db.serialize(() => {
-//     db.each(sql, (err) => {
-//       if (err) {
-//         console.error(err.message);
-//       }
-//     });
-//   });
-
-//   // закрытие бд
-//   db.close();
-// }
-
-// async function writingToCommunities(communityId, title) {
-//   let sql = `INSERT INTO communities
-//              VALUES ('${communityId}', '${title}')`
-
-//   db.serialize(() => {
-//     db.each(sql, (err) => {
-//       if (err) {
-//         console.error(err.message);
-//       }
-//     });
-//   });
-
-//   // закрытие бд
-//   db.close();
-// }
-
-// async function writingToUsersToCommunities(telegramId, communityId) {
-//   let sql = `INSERT INTO usersToCommunities
-//              VALUES ('${telegramId}', '${communityId}')`
-
-//   db.serialize(() => {
-//     db.each(sql, (err) => {
-//       if (err) {
-//         console.error(err.message);
-//       }
-//     });
-//   });
-
-//   // закрытие бд
-//   db.close();
-// }
-
-// async function writingToCommunitiesList(communityId, jsonFollowersList) {
-//   var myDate = new Date(); 
-//   let sql = `INSERT INTO communitiesList
-//              VALUES ('${communityId}', '${myDate}', '${jsonFollowersList}')`
-
-//   db.serialize(() => {
-//     db.each(sql, (err) => {
-//       if (err) {
-//         console.error(err.message);
-//       }
-//     });
-//   });
-
-//   // закрытие бд
-//   db.close();
-// }
