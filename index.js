@@ -80,6 +80,6 @@ async function searchFileTarget(chatId) {//поиск файлов в папке
     for (let i = 0; i < idArray.length; i++) {
         buttonsArray.push([{ text: titleArray[i], callback_data: idArray[i] }])
     }
-    requestsToDB.closeDatabase()
+    //requestsToDB.closeDatabase()
     return buttonsArray
 }
