@@ -39,7 +39,7 @@ function outputMessage() {
         }
         if (text === '/communities') {
             return await bot.sendMessage(chatId, `Список сообществ: `,
-                await creatureArrayCommunities(chatId));
+                await creatureArrayButtons(chatId));
         }
         if (text === '/new') {
             return await bot.sendMessage(chatId, `Введите ID сообщества в формате:
@@ -67,8 +67,8 @@ function outputMessage() {
     })
 }
 
-async function creatureArrayCommunities(chatId) {//подключение для кнопок '/communities'
-    return { reply_markup: { inline_keyboard: await searchFileTarget(chatId) } }
+async function creatureArrayButtons(Id) {//подключение для кнопок '/communities'
+    return { reply_markup: { inline_keyboard: await searchFileTarget(Id) } }
 }
 
 async function searchFileTarget(chatId) {//поиск файлов в папке+генерация массива для кнопки//поиск в бд+генерация массива для кнопки
