@@ -13,8 +13,7 @@ async function writeToFileSQL(telegramId, firstName, communityId) {
 }
 
 async function writeToSQL(telegramId, firstName, jsonFollowersList, title, communityId) {
-  var myDate = new Date();
-  let db = new sqlite3.Database('./database/vkDB.db', (err) => {
+    let db = new sqlite3.Database('./database/vkDB.db', (err) => {
     if (err) {
       console.error(err.message);
     }
@@ -42,9 +41,9 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
             GROUP BY telegramId, communityId)`)
 
     db.run(`INSERT INTO communitiesList (communityId, recordingTime, jsonFollowersList)
-            VALUES ('${communityId}', '${myDate}', '${jsonFollowersList}')
+            VALUES ('${communityId}', '${generationDate()}', '${jsonFollowersList}')
             ON CONFLICT(jsonFollowersList) DO UPDATE SET
-            communityId='${communityId}', recordingTime='${myDate}';`)
+            communityId='${communityId}', recordingTime='${generationDate()}';`)
 
   })
   db.close((err) => {
@@ -52,4 +51,17 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
       console.error(err.message);
     }
   });
+}
+
+function generationDate() {
+  var myDate = new Date();
+
+  let day = myDate.getDate()
+  let month = myDate.getMonth() + 1
+  let year = myDate.getFullYear()
+  let minutes = myDate.getMinutes()
+  let hours=myDate.getHours()
+
+  var fullData = `${hours}:${minutes} ${day}.${month}.${year}`
+  return fullData
 }

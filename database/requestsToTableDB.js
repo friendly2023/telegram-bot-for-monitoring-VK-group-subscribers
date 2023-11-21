@@ -33,7 +33,7 @@ async function creatingTitleArray(telegramId) {//создание массива
 
 async function requestByUser(telegramId) {//вывод запроса в переменную
     let selectResult = await resultSelect(telegramId)
-    closeDatabase()
+    //closeDatabase()
     return selectResult
 }
 
