@@ -62,8 +62,8 @@ function outputMessage() {
     bot.on('callback_query', async msg => {//ответ на кнопку '/communities'
         const groupId = msg.data;
         const chatId = msg.message.chat.id;
-        const result = await communitiesUtils.compareMembersData(groupId, chatId);
-        return await bot.sendMessage(chatId, `${result}`);
+        return await bot.sendMessage(chatId, `Выберете время для сравнения: `,
+        await creatureArrayTimeCommunities(groupId));
     })
 }
 
@@ -81,5 +81,19 @@ async function searchFileTarget(chatId) {//поиск файлов в папке
         buttonsArray.push([{ text: titleArray[i], callback_data: idArray[i] }])
     }
     //requestsToDB.closeDatabase()
+    return buttonsArray
+}
+
+async function creatureArrayTimeCommunities(communityId) {//подключение для кнопок ответов на кнопки '/communities'
+    return { reply_markup: { inline_keyboard: await requestTime(communityId) } }
+}
+
+async function requestTime(communityId) {
+    let timeArray=await requestsToDB.creatingTitleArrayTime(communityId)
+    console.log(timeArray)
+    let buttonsArray = []
+    for (let i = 0; i < timeArray.length; i++) {
+        buttonsArray.push([{ text: timeArray[i], callback_data: timeArray[i] }])
+    }
     return buttonsArray
 }

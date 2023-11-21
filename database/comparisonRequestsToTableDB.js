@@ -7,14 +7,23 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
     }
 });
 
-(async () => console.log(await requestByUser('repostgod')))()
+(async () => console.log(await creatingTitleArrayTime('richie.r.dragon')))()
 
-async function requestByUser(communityId) {//вывод запроса в переменную
-    let selectResult = await resultSelect(communityId)
+async function creatingTitleArrayTime(communityId) {//создание массива времени записи сообществ
+    let timeCommunityId = await requestByUserTime(communityId)
+    let communitiesList=[]
+    for (let i = 0; i < timeCommunityId.length; i++) {
+        communitiesList.push(timeCommunityId[i].recordingTime)   
+    }
+    return communitiesList
+}
+
+async function requestByUserTime(communityId) {//вывод запроса в переменную
+    let selectResult = await resultSelectTime(communityId)
     return selectResult
 }
 
-function resultSelect(communityId) {//запрос
+function resultSelectTime(communityId) {//запрос
     let sql = `SELECT *
     FROM communitiesList
     where communityId='${communityId}'`

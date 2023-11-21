@@ -10,8 +10,9 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
 exports.creatingIdArray = creatingIdArray;
 exports.creatingTitleArray = creatingTitleArray;
 exports.closeDatabase = closeDatabase;
+exports.creatingTitleArrayTime=creatingTitleArrayTime;
 
-//(async () => console.log(await creatingIdArray('412993464')))()
+// (async () => console.log(await creatingTitleArrayTime('richie.r.dragon')))()
 
 async function creatingIdArray(telegramId) {//создание массива id сообществ
     let arrayDataCommunitiesTitleCommunityId = await requestByUser(telegramId)
@@ -43,6 +44,37 @@ function resultSelect(telegramId) {//запрос
     left join communities as c
     on utc.communityId=c.communityId
     where utc.telegramId='${telegramId}'`
+
+    return new Promise(
+        (resolve, reject) => {
+            result =  db.all(sql, [], (err, rows) => {
+                if (err) {
+                    console.error(err.message);
+                }
+                resolve(rows)
+            })
+        }
+    )
+}
+
+async function creatingTitleArrayTime(communityId) {//создание массива времени записи сообществ
+    let timeCommunityId = await requestByUserTime(communityId)
+    let communitiesList=[]
+    for (let i = 0; i < timeCommunityId.length; i++) {
+        communitiesList.push(timeCommunityId[i].recordingTime)   
+    }
+    return communitiesList
+}
+
+async function requestByUserTime(communityId) {//вывод запроса в переменную
+    let selectResult = await resultSelectTime(communityId)
+    return selectResult
+}
+
+function resultSelectTime(communityId) {//запрос
+    let sql = `SELECT *
+    FROM communitiesList
+    where communityId='${communityId}'`
 
     return new Promise(
         (resolve, reject) => {
