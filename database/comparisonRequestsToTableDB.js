@@ -9,17 +9,27 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
 });
 
 (async () => console.log(await comparisonCommunitiesByTime('richie.r.dragon', '19:23 21.11.2023')))()
+exports.comparisonCommunitiesByTime = comparisonCommunitiesByTime;
 
 async function comparisonCommunitiesByTime(communityId, recordingTime) {
     let oldData = await requestByUserJson(communityId, recordingTime);
     let oldDataID = JSON.parse(oldData).response.items.map(item => item.id)
     let newData = await communitiesUtils.getNewGroupMembersData(communityId);
     let newDataID = JSON.parse(newData).response.items.map(item => item.id)
-    return newDataID
+    let comparison= await comparisonID(oldDataID,newDataID)
+    return comparison
 }
 
+async function comparisonID(oldDataID,newDataID) {
+    let subscribed = newDataID.filter(x => !oldDataID.includes(x));
+    let subscrib = await gettingResultsSubscribers(subscribed);
+    
+    let unSubscribed = oldDataID.filter(x => !newDataID.includes(x));
+    let unSubscrib = await gettingResultsNoSubscribers(unSubscribed);
+    return `${subscrib};
+${unSubscrib};`
+}
 
-// (async () => console.log(await requestByUserJson('richie.r.dragon', '19:23 21.11.2023')))()
 
 async function requestByUserJson(communityId, recordingTime) {//вывод запроса в переменную
     let selectResult = await requestResultSelectJson(communityId, recordingTime)
@@ -43,3 +53,22 @@ function requestResultSelectJson(communityId, recordingTime) {//запрос с�
     )
 }
 
+async function gettingResultsNoSubscribers(noSubscribers) {
+    if (noSubscribers.length == 1) {
+        return `Отписался: ${noSubscribers}`
+    } else if (noSubscribers.length > 1) {
+        return `Отписались: ${noSubscribers}`
+    } else {
+        return 'Новых отписавшихся нет'
+    }
+}
+
+async function gettingResultsSubscribers(subscribers) {
+    if (subscribers.length == 1) {
+        return `Подписался: ${subscribers}`
+    } else if (subscribers.length > 1) {
+        return `Подписались: ${subscribers}`
+    } else {
+        return 'Новых подписчиков нет'
+    }
+}

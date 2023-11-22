@@ -60,8 +60,9 @@ function outputMessage() {
     })
 
     bot.on('callback_query', async msg => {//ответ на кнопку '/communities'
-        const groupId = msg.data;
         const chatId = msg.message.chat.id;
+        
+        const groupId = msg.data;
         return await bot.sendMessage(chatId, `Выберете время для сравнения: `,
         await creatureArrayTimeCommunities(groupId));
     })
@@ -77,7 +78,7 @@ async function creatureArrayCommunities(chatId) {//подключение для
     return { reply_markup: { inline_keyboard: await searchFileTarget(chatId) } }
 }
 
-async function searchFileTarget(chatId) {//поиск файлов в папке+генерация массива для кнопки//поиск в бд+генерация массива для кнопки
+async function searchFileTarget(chatId) {//поиск в бд+генерация массива для кнопки
     let idArray=await requestsToDB.creatingIdArray(chatId)
     console.log(idArray)
     let titleArray=await requestsToDB.creatingTitleArray(chatId)
