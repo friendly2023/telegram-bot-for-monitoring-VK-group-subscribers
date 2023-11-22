@@ -61,17 +61,15 @@ function outputMessage() {
 
     bot.on('callback_query', async msg => {//ответ на кнопку '/communities'
         const chatId = msg.message.chat.id;
-        
-        const groupId = msg.data;
-        return await bot.sendMessage(chatId, `Выберете время для сравнения: `,
-        await creatureArrayTimeCommunities(groupId));
+        const text = msg.data;
+        if (text.slice(0, 8) == 'groupId:') {
+            const groupId = text.slice(8);
+            return await bot.sendMessage(chatId, `Выберете время для сравнения: `,
+                await creatureArrayTimeCommunities(groupId));
+        }else(
+            console.log('что то не то')
+        ) 
     })
-    // bot.on('callback_query', async msg => {//ответ на кнопки кнопок '/communities'
-    //     const time = msg.data;
-    //     const chatId = msg.message.chat.id;
-    //     const result = await communitiesUtils.compareMembersData(groupId, chatId);
-    //     return await bot.sendMessage(chatId, `${result}`);
-    // })
 }
 
 async function creatureArrayCommunities(chatId) {//подключение для кнопок '/communities'
@@ -85,7 +83,7 @@ async function searchFileTarget(chatId) {//поиск в бд+генерация
     console.log(titleArray)
     let buttonsArray = []
     for (let i = 0; i < idArray.length; i++) {
-        buttonsArray.push([{ text: titleArray[i], callback_data: idArray[i] }])
+        buttonsArray.push([{ text: titleArray[i], callback_data: `groupId:${idArray[i]}` }])
     }
     //requestsToDB.closeDatabase()
     return buttonsArray
