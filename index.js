@@ -7,6 +7,7 @@ const communitiesUtils = require('./bot_VK_get/bot.js');
 const writingToDB = require('./database/writingToTableDB.js');//запись
 const delToDB = require('./database/delToTableDB.js');//удаление
 const requestsToDB = require('./database/requestsToTableDB.js');//запросы
+const comparisonRequestsToDB = require('./database/comparisonRequestsToTableDB.js');//сравнение старого и нового
 
 bot.setMyCommands([
     {
@@ -66,9 +67,18 @@ function outputMessage() {
             const groupId = text.slice(8);
             return await bot.sendMessage(chatId, `Выберете время для сравнения: `,
                 await creatureArrayTimeCommunities(groupId));
-        }else(
+        } else if(text.slice(0, 5) == 'time:'){
+            const groupIdTime=text.slice(5);
+            const time=text.slice(-16)
+            const groupId = groupIdTime.slice(0, -17);
+            // console.log(groupIdTime)
+            // console.log(time)
+            // console.log(groupId)
+            return await comparisonRequestsToDB.comparisonCommunitiesByTime(groupId, time)
+                .then(result => bot.sendMessage(chatId, `${result}`));
+        } else {
             console.log('что то не то')
-        ) 
+        }
     })
 }
 
@@ -78,9 +88,9 @@ async function creatureArrayCommunities(chatId) {//подключение для
 
 async function searchFileTarget(chatId) {//поиск в бд+генерация массива для кнопки
     let idArray=await requestsToDB.creatingIdArray(chatId)
-    console.log(idArray)
+    // console.log(idArray)
     let titleArray=await requestsToDB.creatingTitleArray(chatId)
-    console.log(titleArray)
+    // console.log(titleArray)
     let buttonsArray = []
     for (let i = 0; i < idArray.length; i++) {
         buttonsArray.push([{ text: titleArray[i], callback_data: `groupId:${idArray[i]}` }])
@@ -95,10 +105,10 @@ async function creatureArrayTimeCommunities(communityId) {//подключени
 
 async function requestTime(communityId) {
     let timeArray=await requestsToDB.creatingTitleArrayTime(communityId)
-    console.log(timeArray)
+    //console.log(timeArray)
     let buttonsArray = []
     for (let i = 0; i < timeArray.length; i++) {
-        buttonsArray.push([{ text: timeArray[i], callback_data: timeArray[i] }])
+        buttonsArray.push([{ text: timeArray[i], callback_data: `time:${communityId}:${timeArray[i]}` }])
     }
     return buttonsArray
 }

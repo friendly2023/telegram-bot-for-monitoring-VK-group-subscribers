@@ -8,7 +8,7 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
     }
 });
 
-(async () => console.log(await comparisonCommunitiesByTime('richie.r.dragon', '19:23 21.11.2023')))()
+// (async () => console.log(await comparisonCommunitiesByTime('richie.r.dragon', '19:23 21.11.2023')))()
 exports.comparisonCommunitiesByTime = comparisonCommunitiesByTime;
 
 async function comparisonCommunitiesByTime(communityId, recordingTime) {
@@ -36,7 +36,7 @@ async function requestByUserJson(communityId, recordingTime) {//вывод за�
     return selectResult[0].jsonFollowersList
 }
 
-function requestResultSelectJson(communityId, recordingTime) {//запрос строки json выбранного времени
+async function requestResultSelectJson(communityId, recordingTime) {//запрос строки json выбранного времени
     let sql = `SELECT jsonFollowersList
     FROM communitiesList
     where communityId='${communityId}' and recordingTime='${recordingTime}'`
