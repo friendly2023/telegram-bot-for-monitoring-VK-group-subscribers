@@ -65,6 +65,12 @@ function outputMessage() {
         return await bot.sendMessage(chatId, `Выберете время для сравнения: `,
         await creatureArrayTimeCommunities(groupId));
     })
+    // bot.on('callback_query', async msg => {//ответ на кнопки кнопок '/communities'
+    //     const time = msg.data;
+    //     const chatId = msg.message.chat.id;
+    //     const result = await communitiesUtils.compareMembersData(groupId, chatId);
+    //     return await bot.sendMessage(chatId, `${result}`);
+    // })
 }
 
 async function creatureArrayCommunities(chatId) {//подключение для кнопок '/communities'

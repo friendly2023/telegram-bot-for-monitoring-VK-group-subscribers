@@ -7,26 +7,17 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
     }
 });
 
-(async () => console.log(await creatingTitleArrayTime('richie.r.dragon')))()
+(async () => console.log(await requestByUserJson('richie.r.dragon','19:23 21.11.2023')))()
 
-async function creatingTitleArrayTime(communityId) {//создание массива времени записи сообществ
-    let timeCommunityId = await requestByUserTime(communityId)
-    let communitiesList=[]
-    for (let i = 0; i < timeCommunityId.length; i++) {
-        communitiesList.push(timeCommunityId[i].recordingTime)   
-    }
-    return communitiesList
+async function requestByUserJson(communityId, recordingTime) {//вывод запроса в переменную
+    let selectResult = await requestResultSelectJson(communityId, recordingTime)
+    return JSON.parse(selectResult[0].jsonFollowersList).response
 }
 
-async function requestByUserTime(communityId) {//вывод запроса в переменную
-    let selectResult = await resultSelectTime(communityId)
-    return selectResult
-}
-
-function resultSelectTime(communityId) {//запрос
-    let sql = `SELECT *
+function requestResultSelectJson(communityId, recordingTime) {//запрос строки json выбранного времени
+    let sql = `SELECT jsonFollowersList
     FROM communitiesList
-    where communityId='${communityId}'`
+    where communityId='${communityId}' and recordingTime='${recordingTime}'`
 
     return new Promise(
         (resolve, reject) => {
@@ -39,3 +30,4 @@ function resultSelectTime(communityId) {//запрос
         }
     )
 }
+
