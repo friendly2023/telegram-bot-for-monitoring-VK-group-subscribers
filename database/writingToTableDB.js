@@ -41,9 +41,9 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
             GROUP BY telegramId, communityId)`)
 
     db.run(`INSERT INTO communitiesList (communityId, recordingTime, jsonFollowersList)
-            VALUES ('${communityId}', '${generationDate()}', '${jsonFollowersList}')
+            VALUES ('${communityId}', '${new Date().toLocaleString()}', '${jsonFollowersList}')
             ON CONFLICT(jsonFollowersList) DO UPDATE SET
-            communityId='${communityId}', recordingTime='${generationDate()}';`)
+            communityId='${communityId}', recordingTime='${new Date().toLocaleString()}';`)
 
   })
   db.close((err) => {
@@ -53,15 +53,15 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
   });
 }
 
-function generationDate() {
-  var myDate = new Date();
+// function generationDate() {
+//   var myDate = new Date();
 
-  let day = myDate.getDate()
-  let month = myDate.getMonth() + 1
-  let year = myDate.getFullYear()
-  let minutes = myDate.getMinutes()
-  let hours=myDate.getHours()
+//   let day = myDate.getDate()
+//   let month = myDate.getMonth() + 1
+//   let year = myDate.getFullYear()
+//   let minutes = myDate.getMinutes()
+//   let hours=myDate.getHours()
 
-  var fullData = `${hours}:${minutes} ${day}.${month}.${year}`
-  return fullData
-}
+//   var fullData = `${hours}:${minutes} ${day}.${month}.${year}`
+//   return fullData
+// }

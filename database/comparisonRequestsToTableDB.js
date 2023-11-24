@@ -8,14 +8,16 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
     }
 });
 
-// (async () => console.log(await comparisonCommunitiesByTime('richie.r.dragon', '19:23 21.11.2023')))()
+// (async () => console.log(await comparisonCommunitiesByTime('richie.r.dragon', '24.11.2023, 16:33:32')))()
 exports.comparisonCommunitiesByTime = comparisonCommunitiesByTime;
 
 async function comparisonCommunitiesByTime(communityId, recordingTime) {
     let oldData = await requestByUserJson(communityId, recordingTime);
-    let oldDataID = JSON.parse(oldData).response.items.map(item => item.id)
+    let oldDataID = JSON.parse(oldData).response.items.map(item => item.id);
+    // console.log(oldDataID)
     let newData = await communitiesUtils.getNewGroupMembersData(communityId);
     let newDataID = JSON.parse(newData).response.items.map(item => item.id)
+    // console.log(newDataID)
     let comparison= await comparisonID(oldDataID,newDataID)
     return comparison
 }
@@ -33,6 +35,7 @@ ${unSubscrib};`
 
 async function requestByUserJson(communityId, recordingTime) {//вывод запроса в переменную
     let selectResult = await requestResultSelectJson(communityId, recordingTime)
+    // console.log(selectResult[0].jsonFollowersList)
     return selectResult[0].jsonFollowersList
 }
 

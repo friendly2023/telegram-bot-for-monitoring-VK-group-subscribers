@@ -69,11 +69,11 @@ function outputMessage() {
                 await creatureArrayTimeCommunities(groupId));
         } else if(text.slice(0, 5) == 'time:'){
             const groupIdTime=text.slice(5);
-            const time=text.slice(-16)
-            const groupId = groupIdTime.slice(0, -17);
-            // console.log(groupIdTime)
-            // console.log(time)
-            // console.log(groupId)
+            const time=text.slice(-20)
+            const groupId = groupIdTime.slice(0, -21);
+            console.log(groupIdTime)
+            console.log(time)
+            console.log(groupId)
             return await comparisonRequestsToDB.comparisonCommunitiesByTime(groupId, time)
                 .then(result => bot.sendMessage(chatId, `${result}`));
         } else {
@@ -105,7 +105,7 @@ async function creatureArrayTimeCommunities(communityId) {//подключени
 
 async function requestTime(communityId) {
     let timeArray=await requestsToDB.creatingTitleArrayTime(communityId)
-    //console.log(timeArray)
+    console.log(timeArray)
     let buttonsArray = []
     for (let i = 0; i < timeArray.length; i++) {
         buttonsArray.push([{ text: timeArray[i], callback_data: `time:${communityId}:${timeArray[i]}` }])
