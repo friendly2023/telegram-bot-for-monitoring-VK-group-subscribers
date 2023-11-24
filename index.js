@@ -71,19 +71,29 @@ function outputMessage() {
             const groupIdTime=text.slice(5);
             const time=text.slice(-20)
             const groupId = groupIdTime.slice(0, -21);
-            console.log(groupIdTime)
-            console.log(time)
-            console.log(groupId)
+            // console.log(groupIdTime)
+            // console.log(time)
+            // console.log(groupId)
             return await comparisonRequestsToDB.comparisonCommunitiesByTime(groupId, time)
                 .then(result => bot.sendMessage(chatId, `${result}`));
-        } else {
-            console.log('что то не то')
+        } else if(text.slice(0, 4) == 'new'){
+            return await bot.sendMessage(chatId, `Введите ID сообщества в формате:
+            ID: ...`);
+        }else{
+            console.log('ответа на запрос не нашлось')
         }
     })
 }
 
 async function creatureArrayCommunities(chatId) {//подключение для кнопок '/communities'
-    return { reply_markup: { inline_keyboard: await searchFileTarget(chatId) } }
+    let buttonGeneratorArray = await searchFileTarget(chatId)
+    if (buttonGeneratorArray.length == 0) {
+        return { reply_markup: { inline_keyboard: [[{ text: '<<пусто>>', callback_data: `new` }],
+                                                   [{ text: 'Добавить сообщество?', callback_data: `new` }]] } }
+    }else{
+        return { reply_markup: { inline_keyboard: buttonGeneratorArray } }
+    }
+    
 }
 
 async function searchFileTarget(chatId) {//поиск в бд+генерация массива для кнопки
@@ -95,7 +105,6 @@ async function searchFileTarget(chatId) {//поиск в бд+генерация
     for (let i = 0; i < idArray.length; i++) {
         buttonsArray.push([{ text: titleArray[i], callback_data: `groupId:${idArray[i]}` }])
     }
-    //requestsToDB.closeDatabase()
     return buttonsArray
 }
 
