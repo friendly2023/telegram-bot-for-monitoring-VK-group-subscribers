@@ -4,12 +4,28 @@ const communitiesUtils = require('../bot_VK_get/bot.js');
 exports.writeToFileSQL = writeToFileSQL;
 
 async function writeToFileSQL(telegramId, firstName, communityId) {
-  let newDataGroup = await communitiesUtils.getNewGroupMembersData(communityId);
+  let check= await verificationIdForAuthenticity(communityId)
+  if (check=='ok') {
+    let newDataGroup = await communitiesUtils.getNewGroupMembersData(communityId);
   //console.log(newDataGroup)
   let newNameGroup = await communitiesUtils.getCommunityName(communityId);
   //console.log(newNameGroup)
   let dataInSQL = await writeToSQL(telegramId, firstName, newDataGroup, newNameGroup, communityId);
   return `Данные  по сообществу '${newNameGroup}' добавлены/обновлены`
+  } else{
+    return `Сообщества с id '${communityId}' не существует`
+  }
+  
+}
+
+async function verificationIdForAuthenticity(communityId) {//проверка на подлинность
+  let url = `https://vk.com/${communityId}`;
+    const response = await fetch(url, { method: 'GET' });
+    if (response.ok) {
+      return 'ok'
+    } else {
+      return 'not ok'
+    }
 }
 
 async function writeToSQL(telegramId, firstName, jsonFollowersList, title, communityId) {
