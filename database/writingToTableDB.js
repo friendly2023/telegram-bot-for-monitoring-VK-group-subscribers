@@ -11,9 +11,9 @@ async function writeToFileSQL(telegramId, firstName, communityId) {
   let newNameGroup = await communitiesUtils.getCommunityName(communityId);
   //console.log(newNameGroup)
   let dataInSQL = await writeToSQL(telegramId, firstName, newDataGroup, newNameGroup, communityId);
-  return `Данные  по сообществу '${newNameGroup}' добавлены/обновлены`
+  return `Данные  по сообществу "${newNameGroup}" добавлены/обновлены`
   } else{
-    return `Сообщества с id '${communityId}' не существует`
+    return `Сообщества с id "${communityId}" не существует`
   }
   
 }
