@@ -45,10 +45,10 @@ function outputMessage() {
         if (text === '/new') {
             return await bot.sendMessage(chatId, `Пришлите ссылку на сообщество которое хотите добавить`);
         }
-        // if (text === '/del') {
-        //     return await delToDB.delToFileSQL(chatId,)
-        //         .then(result => bot.sendMessage(chatId, `${result}`));
-        //}
+        if (text === '/del') {
+            return await bot.sendMessage(chatId, `Сообщества для удаления: `,
+                await creatureArrayCommunitiesDel(chatId));
+        }
         if (text.slice(0, 15) == 'https://vk.com/') {
             groupId = text.slice(15);
             return await writingToDB.writeToFileSQL(chatId, msg.from.first_name, groupId)
@@ -74,10 +74,13 @@ function outputMessage() {
             return await comparisonRequestsToDB.comparisonCommunitiesByTime(groupId, time)
                 .then(result => bot.sendMessage(chatId, `${result}`));
         } else if(text.slice(0, 4) == 'new'){
-            return await bot.sendMessage(chatId, `Введите ID сообщества в формате:
-            ID: ...`);
+            return await bot.sendMessage(chatId, `Пришлите ссылку на сообщество которое хотите добавить`);
+        }else if(text.slice(0, 4) == 'del:'){
+            const groupId = text.slice(4);
+            return await delToDB.delToFileSQL(chatId, groupId)
+                .then(result => bot.sendMessage(chatId, `${result}`));
         }else{
-            console.log('ответа на запрос не нашлось')
+            console.log('Ответа на запрос не найден')
         }
     })
 }
@@ -90,7 +93,6 @@ async function creatureArrayCommunities(chatId) {//подключение для
     }else{
         return { reply_markup: { inline_keyboard: buttonGeneratorArray } }
     }
-    
 }
 
 async function searchFileTarget(chatId) {//поиск в бд+генерация массива для кнопки
@@ -111,10 +113,32 @@ async function creatureArrayTimeCommunities(communityId) {//подключени
 
 async function requestTime(communityId) {
     let timeArray=await requestsToDB.creatingTitleArrayTime(communityId)
-    console.log(timeArray)
+    // console.log(timeArray)
     let buttonsArray = []
     for (let i = 0; i < timeArray.length; i++) {
         buttonsArray.push([{ text: timeArray[i], callback_data: `time:${communityId}:${timeArray[i]}` }])
+    }
+    return buttonsArray
+}
+
+async function creatureArrayCommunitiesDel(chatId) {//подключение для кнопок '/del'
+    let buttonGeneratorArray = await searchFileTargetDel(chatId)
+    if (buttonGeneratorArray.length == 0) {
+        return { reply_markup: { inline_keyboard: [[{ text: '<<пусто>>', callback_data: `new` }],
+                                                   [{ text: 'Добавить сообщество?', callback_data: `new` }]] } }
+    }else{
+        return { reply_markup: { inline_keyboard: buttonGeneratorArray } }
+    }
+}
+
+async function searchFileTargetDel(chatId) {//поиск в бд+генерация массива для кнопки '/del'
+    let idArray=await requestsToDB.creatingIdArray(chatId)
+    // console.log(idArray)
+    let titleArray=await requestsToDB.creatingTitleArray(chatId)
+    // console.log(titleArray)
+    let buttonsArray = []
+    for (let i = 0; i < idArray.length; i++) {
+        buttonsArray.push([{ text: titleArray[i], callback_data: `del:${idArray[i]}` }])
     }
     return buttonsArray
 }
