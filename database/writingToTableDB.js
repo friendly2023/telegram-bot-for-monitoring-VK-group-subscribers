@@ -84,16 +84,20 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
 
 async function comparisonCommunitySubscribers(communityId) {//сравнение последнего записанного json с текущим
   let oldData = await requestLastRecord(communityId);
-  let oldDataID = JSON.parse(oldData[0].jsonFollowersList).response.items.map(item => item.id);
-  // console.log(oldDataID)
-  let newData = await communitiesUtils.getNewGroupMembersData(communityId);
-  let newDataID = JSON.parse(newData).response.items.map(item => item.id)
-  // console.log(newDataID)
-  let comparison= await comparisonRequestsToTableDB.comparisonID(oldDataID,newDataID)
-  if (comparison.includes("Новых подписчиков нет")&&comparison.includes("Новых отписавшихся нет")) {
-    return "ok"
-  }else{
+  if (oldData.length == 0) {
     return "not ok"
+  } else {
+    let oldDataID = JSON.parse(oldData[0].jsonFollowersList).response.items.map(item => item.id);
+    // console.log(oldData)
+    let newData = await communitiesUtils.getNewGroupMembersData(communityId);
+    let newDataID = JSON.parse(newData).response.items.map(item => item.id)
+    // console.log(newDataID)
+    let comparison = await comparisonRequestsToTableDB.comparisonID(oldDataID, newDataID)
+    if (comparison.includes("Новых подписчиков нет") && comparison.includes("Новых отписавшихся нет")) {
+      return "ok"
+    } else {
+      return "not ok"
+    }
   }
 }
 
