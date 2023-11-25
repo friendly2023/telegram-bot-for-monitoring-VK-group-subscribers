@@ -10,8 +10,8 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
   }
 });
 
-// (async () => console.log(await writeToFileSQL('412993464', 'Friendly', 'richie.r.dragon')))()
-(async () => console.log(await comparisonCommunitySubscribers('richie.r.dragon')))()
+// (async () => console.log(await writeToFileSQL('412993464', 'Friendly', 'repostgod')))()
+// (async () => console.log(await comparisonCommunitySubscribers('repostgod')))()
 
 async function writeToFileSQL(telegramId, firstName, communityId) {
   let check= await verificationIdForAuthenticity(communityId)
@@ -39,7 +39,7 @@ async function verificationIdForAuthenticity(communityId) {//проверка н
 }
 
 async function writeToSQL(telegramId, firstName, jsonFollowersList, title, communityId) {
-    
+    let check= await comparisonCommunitySubscribers(communityId);
   db.serialize(() => {
 
     db.run(`INSERT INTO users (telegramId, firstName)
@@ -61,10 +61,18 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
             FROM usersToCommunities
             GROUP BY telegramId, communityId)`)
 
-    db.run(`INSERT INTO communitiesList (communityId, recordingTime, jsonFollowersList)
-            VALUES ('${communityId}', '${new Date().toLocaleString()}', '${jsonFollowersList}')
-            ON CONFLICT(jsonFollowersList) DO UPDATE SET
-            communityId='${communityId}', recordingTime='${new Date().toLocaleString()}';`)
+    // db.run(`INSERT INTO communitiesList (communityId, recordingTime, jsonFollowersList)
+    //         VALUES ('${communityId}', '${new Date().toLocaleString()}', '${jsonFollowersList}')
+    //         ON CONFLICT(jsonFollowersList) DO UPDATE SET
+    //         communityId='${communityId}', recordingTime='${new Date().toLocaleString()}';`)
+    if (check=="ok") {
+      db.run(`UPDATE communitiesList 
+              SET recordingTime='${new Date().toLocaleString()}'
+              WHERE jsonFollowersList='${jsonFollowersList}';`)
+    }else{
+      db.run(`INSERT INTO communitiesList (communityId, recordingTime, jsonFollowersList)
+              VALUES ('${communityId}', '${new Date().toLocaleString()}', '${jsonFollowersList}');`)
+    }
 
   })
   db.close((err) => {
