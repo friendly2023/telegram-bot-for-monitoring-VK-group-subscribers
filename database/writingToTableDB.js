@@ -3,6 +3,15 @@ const communitiesUtils = require('../bot_VK_get/bot.js');
 
 exports.writeToFileSQL = writeToFileSQL;
 
+let db = new sqlite3.Database('./database/vkDB.db', (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+});
+
+// (async () => console.log(await writeToFileSQL('412993464', 'Friendly', 'richie.r.dragon')))()
+// (async () => console.log(await requestLastRecord('richie.r.dragon')))()
+
 async function writeToFileSQL(telegramId, firstName, communityId) {
   let check= await verificationIdForAuthenticity(communityId)
   if (check=='ok') {
@@ -29,11 +38,7 @@ async function verificationIdForAuthenticity(communityId) {//проверка н
 }
 
 async function writeToSQL(telegramId, firstName, jsonFollowersList, title, communityId) {
-    let db = new sqlite3.Database('./database/vkDB.db', (err) => {
-    if (err) {
-      console.error(err.message);
-    }
-  });
+    
   db.serialize(() => {
 
     db.run(`INSERT INTO users (telegramId, firstName)
@@ -45,7 +50,6 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
             VALUES ('${communityId}', '${title}')
             ON CONFLICT(communityId) DO UPDATE SET
             title='${title}';`)
-
 
     db.run(`INSERT INTO usersToCommunities(telegramId, communityId)
             VALUES ('${telegramId}', '${communityId}');`)
@@ -60,7 +64,6 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
             VALUES ('${communityId}', '${new Date().toLocaleString()}', '${jsonFollowersList}')
             ON CONFLICT(jsonFollowersList) DO UPDATE SET
             communityId='${communityId}', recordingTime='${new Date().toLocaleString()}';`)
-
   })
   db.close((err) => {
     if (err) {
@@ -69,15 +72,22 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
   });
 }
 
-// function generationDate() {
-//   var myDate = new Date();
 
-//   let day = myDate.getDate()
-//   let month = myDate.getMonth() + 1
-//   let year = myDate.getFullYear()
-//   let minutes = myDate.getMinutes()
-//   let hours=myDate.getHours()
 
-//   var fullData = `${hours}:${minutes} ${day}.${month}.${year}`
-//   return fullData
-// }
+async function requestLastRecord(communityId) {
+  let sql = `SELECT recordingTime
+    FROM communitiesList
+    where communityId='${communityId}'
+    ORDER BY recordingTime DESC LIMIT 1`
+
+  return new Promise(
+    (resolve, reject) => {
+      result = db.all(sql, [], (err, rows) => {
+        if (err) {
+          console.error(err.message);
+        }
+        resolve(rows)
+      })
+    }
+  )
+}
