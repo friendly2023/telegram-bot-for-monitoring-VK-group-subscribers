@@ -43,19 +43,16 @@ function outputMessage() {
                 await creatureArrayCommunities(chatId));
         }
         if (text === '/new') {
-            return await bot.sendMessage(chatId, `Введите ID сообщества в формате:
-            ID: ...`);
+            return await bot.sendMessage(chatId, `Пришлите ссылку на сообщество которое хотите добавить`);
         }
         // if (text === '/del') {
         //     return await delToDB.delToFileSQL(chatId,)
         //         .then(result => bot.sendMessage(chatId, `${result}`));
         //}
-        if (text.slice(0, 3) == 'ID:') {
-            groupId = text.slice(3);
+        if (text.slice(0, 15) == 'https://vk.com/') {
+            groupId = text.slice(15);
             return await writingToDB.writeToFileSQL(chatId, msg.from.first_name, groupId)
                 .then(result => bot.sendMessage(chatId, `${result}`));
-            // return await communitiesUtils.addingNewCommunity(groupId, chatId)
-            //     .then(result => bot.sendMessage(chatId, `${result}`));
         }
         return await bot.sendMessage(chatId, `Хз о чем ты..`);
     })
