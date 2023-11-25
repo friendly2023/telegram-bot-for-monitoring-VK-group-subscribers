@@ -75,11 +75,6 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
     }
 
   })
-  db.close((err) => {
-    if (err) {
-      console.error(err.message);
-    }
-  });
 }
 
 async function comparisonCommunitySubscribers(communityId) {//сравнение последнего записанного json с текущим
