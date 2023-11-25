@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const communitiesUtils = require('../bot_VK_get/bot.js');
+const comparisonRequestsToTableDB = require('./comparisonRequestsToTableDB.js');
 
 exports.writeToFileSQL = writeToFileSQL;
 
@@ -10,7 +11,7 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
 });
 
 // (async () => console.log(await writeToFileSQL('412993464', 'Friendly', 'richie.r.dragon')))()
-// (async () => console.log(await requestLastRecord('richie.r.dragon')))()
+(async () => console.log(await comparisonCommunitySubscribers('richie.r.dragon')))()
 
 async function writeToFileSQL(telegramId, firstName, communityId) {
   let check= await verificationIdForAuthenticity(communityId)
@@ -64,6 +65,7 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
             VALUES ('${communityId}', '${new Date().toLocaleString()}', '${jsonFollowersList}')
             ON CONFLICT(jsonFollowersList) DO UPDATE SET
             communityId='${communityId}', recordingTime='${new Date().toLocaleString()}';`)
+
   })
   db.close((err) => {
     if (err) {
@@ -72,10 +74,23 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
   });
 }
 
+async function comparisonCommunitySubscribers(communityId) {//сравнение последнего записанного json с текущим
+  let oldData = await requestLastRecord(communityId);
+  let oldDataID = JSON.parse(oldData[0].jsonFollowersList).response.items.map(item => item.id);
+  // console.log(oldDataID)
+  let newData = await communitiesUtils.getNewGroupMembersData(communityId);
+  let newDataID = JSON.parse(newData).response.items.map(item => item.id)
+  // console.log(newDataID)
+  let comparison= await comparisonRequestsToTableDB.comparisonID(oldDataID,newDataID)
+  if (comparison.includes("Новых подписчиков нет")&&comparison.includes("Новых отписавшихся нет")) {
+    return "ok"
+  }else{
+    return "not ok"
+  }
+}
 
-
-async function requestLastRecord(communityId) {
-  let sql = `SELECT recordingTime
+async function requestLastRecord(communityId) {//запрос последнего записанного json для сообщества
+  let sql = `SELECT jsonFollowersList
     FROM communitiesList
     where communityId='${communityId}'
     ORDER BY recordingTime DESC LIMIT 1`
