@@ -23,7 +23,7 @@ let tableUsersToCommunities = `CREATE TABLE usersToCommunities (
 let tableCommunitiesList = `CREATE TABLE communitiesList (
   communityId varchar(100),
   recordingTime varchar(20),
-  jsonFollowersList mediumtext UNIQUE
+  jsonFollowersList mediumtext
 );`;
 
 db.serialize(() => {

@@ -10,6 +10,7 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
 
 // (async () => console.log(await comparisonCommunitiesByTime('richie.r.dragon', '24.11.2023, 16:33:32')))()
 exports.comparisonCommunitiesByTime = comparisonCommunitiesByTime;
+exports.comparisonID=comparisonID;
 
 async function comparisonCommunitiesByTime(communityId, recordingTime) {
     let oldData = await requestByUserJson(communityId, recordingTime);
