@@ -1,9 +1,7 @@
 const fs = require('fs')
 const { token } = require('./serviceKey/telegramKey.js');
-const { fileTarget } = require('./bot_VK_get/bot.js');
 const TelegramApi = require('node-telegram-bot-api')
 const bot = new TelegramApi(token, { polling: true })
-const communitiesUtils = require('./bot_VK_get/bot.js');
 const writingToDB = require('./database/writingToTableDB.js');//запись
 const delToDB = require('./database/delToTableDB.js');//удаление
 const requestsToDB = require('./database/requestsToTableDB.js');//запросы
@@ -97,9 +95,7 @@ async function creatureArrayCommunities(chatId) {//подключение для
 
 async function searchFileTarget(chatId) {//поиск в бд+генерация массива для кнопки
     let idArray=await requestsToDB.creatingIdArray(chatId)
-    // console.log(idArray)
     let titleArray=await requestsToDB.creatingTitleArray(chatId)
-    // console.log(titleArray)
     let buttonsArray = []
     for (let i = 0; i < idArray.length; i++) {
         buttonsArray.push([{ text: titleArray[i], callback_data: `groupId:${idArray[i]}` }])
@@ -113,7 +109,6 @@ async function creatureArrayTimeCommunities(communityId) {//подключени
 
 async function requestTime(communityId) {
     let timeArray=await requestsToDB.creatingTitleArrayTime(communityId)
-    // console.log(timeArray)
     let buttonsArray = []
     for (let i = 0; i < timeArray.length; i++) {
         buttonsArray.push([{ text: timeArray[i], callback_data: `time:${communityId}:${timeArray[i]}` }])
@@ -133,9 +128,7 @@ async function creatureArrayCommunitiesDel(chatId) {//подключение д�
 
 async function searchFileTargetDel(chatId) {//поиск в бд+генерация массива для кнопки '/del'
     let idArray=await requestsToDB.creatingIdArray(chatId)
-    // console.log(idArray)
     let titleArray=await requestsToDB.creatingTitleArray(chatId)
-    // console.log(titleArray)
     let buttonsArray = []
     for (let i = 0; i < idArray.length; i++) {
         buttonsArray.push([{ text: titleArray[i], callback_data: `del:${idArray[i]}` }])
