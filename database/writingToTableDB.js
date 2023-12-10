@@ -14,28 +14,16 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
 // (async () => console.log(await comparisonCommunitySubscribers('repostgod')))()
 
 async function writeToFileSQL(telegramId, firstName, communityId) {
-  let check= await verificationIdForAuthenticity(communityId)
-  if (check=='ok') {
-    let newDataGroup = await communitiesUtils.getNewGroupMembersData(communityId);
-  //console.log(newDataGroup)
-  let newNameGroup = await communitiesUtils.getCommunityName(communityId);
-  //console.log(newNameGroup)
-  let dataInSQL = await writeToSQL(telegramId, firstName, newDataGroup, newNameGroup, communityId);
-  return `Данные  по сообществу "${newNameGroup}" добавлены/обновлены`
-  } else{
-    return `Сообщества с id "${communityId}" не существует`
+  let newDataGroup = await communitiesUtils.getNewGroupMembersData(communityId);
+  // console.log(newDataGroup.slice(0, 21))
+  if (newDataGroup.slice(0, 21) == `{"response":{"count":`) {
+    let newNameGroup = await communitiesUtils.getCommunityName(communityId);
+    //console.log(newNameGroup)
+    let dataInSQL = await writeToSQL(telegramId, firstName, newDataGroup, newNameGroup, communityId);
+    return `Данные  по сообществу "${newNameGroup}" добавлены/обновлены`
+  } else {
+    return `Сообщества по предложенной ссылке не существует, проверте правильность написания`
   }
-  
-}
-
-async function verificationIdForAuthenticity(communityId) {//проверка на подлинность
-  let url = `https://vk.com/${communityId}`;
-    const response = await fetch(url, { method: 'GET' });
-    if (response.ok) {
-      return 'ok'
-    } else {
-      return 'not ok'
-    }
 }
 
 async function writeToSQL(telegramId, firstName, jsonFollowersList, title, communityId) {
@@ -61,10 +49,6 @@ async function writeToSQL(telegramId, firstName, jsonFollowersList, title, commu
             FROM usersToCommunities
             GROUP BY telegramId, communityId)`)
 
-    // db.run(`INSERT INTO communitiesList (communityId, recordingTime, jsonFollowersList)
-    //         VALUES ('${communityId}', '${new Date().toLocaleString()}', '${jsonFollowersList}')
-    //         ON CONFLICT(jsonFollowersList) DO UPDATE SET
-    //         communityId='${communityId}', recordingTime='${new Date().toLocaleString()}';`)
     if (check=="ok") {
       db.run(`UPDATE communitiesList 
               SET recordingTime='${new Date().toLocaleString()}'

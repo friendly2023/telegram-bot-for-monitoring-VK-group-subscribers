@@ -62,7 +62,7 @@ function outputMessage() {
         const text = msg.data;
         if (text.slice(0, 8) == 'groupId:') {
             const groupId = text.slice(8);
-            return await bot.sendMessage(chatId, `Выберете время для сравнения: `,
+            return await bot.sendMessage(chatId, `Выберите время для сравнения: `,
                 await creatureArrayTimeCommunities(groupId));
         } else if(text.slice(0, 5) == 'time:'){
             const groupIdTime=text.slice(5);
