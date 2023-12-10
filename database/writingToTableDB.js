@@ -15,10 +15,9 @@ let db = new sqlite3.Database('./database/vkDB.db', (err) => {
 
 async function writeToFileSQL(telegramId, firstName, communityId) {
   let newDataGroup = await communitiesUtils.getNewGroupMembersData(communityId);
-  // console.log(newDataGroup.slice(0, 21))
+
   if (newDataGroup.slice(0, 21) == `{"response":{"count":`) {
     let newNameGroup = await communitiesUtils.getCommunityName(communityId);
-    //console.log(newNameGroup)
     let dataInSQL = await writeToSQL(telegramId, firstName, newDataGroup, newNameGroup, communityId);
     return `Данные  по сообществу "${newNameGroup}" добавлены/обновлены`
   } else {
@@ -67,11 +66,10 @@ async function comparisonCommunitySubscribers(communityId) {//сравнение
     return "not ok"
   } else {
     let oldDataID = JSON.parse(oldData[0].jsonFollowersList).response.items.map(item => item.id);
-    // console.log(oldData)
     let newData = await communitiesUtils.getNewGroupMembersData(communityId);
     let newDataID = JSON.parse(newData).response.items.map(item => item.id)
-    // console.log(newDataID)
     let comparison = await comparisonRequestsToTableDB.comparisonID(oldDataID, newDataID)
+    
     if (comparison.includes("Новых подписчиков нет") && comparison.includes("Новых отписавшихся нет")) {
       return "ok"
     } else {
