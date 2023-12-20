@@ -1,6 +1,0 @@
-Список локальных веток : git branch
-удалить : git branch -D
-обновление : git fetch
-
-Список удаленных веток : git branch -r
-удалить : git branch -rD
