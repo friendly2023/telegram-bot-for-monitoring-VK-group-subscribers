@@ -15,10 +15,10 @@ exports.comparisonID=comparisonID;
 async function comparisonCommunitiesByTime(communityId, recordingTime) {
     let oldData = await requestByUserJson(communityId, recordingTime);
     let oldDataID = JSON.parse(oldData).response.items.map(item => item.id);
-    // console.log(oldDataID)
+    
     let newData = await communitiesUtils.getNewGroupMembersData(communityId);
     let newDataID = JSON.parse(newData).response.items.map(item => item.id)
-    // console.log(newDataID)
+
     let comparison= await comparisonID(oldDataID,newDataID)
     return comparison
 }
@@ -36,7 +36,6 @@ ${unSubscrib};`
 
 async function requestByUserJson(communityId, recordingTime) {//вывод запроса в переменную
     let selectResult = await requestResultSelectJson(communityId, recordingTime)
-    // console.log(selectResult[0].jsonFollowersList)
     return selectResult[0].jsonFollowersList
 }
 

@@ -1,5 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
+exports.createBD = createBD;
 
+async function createBD() {
 // открытие БД
 let db = new sqlite3.Database('./database/vkDB.db', (err) => {
   if (err) {
@@ -35,3 +37,4 @@ db.serialize(() => {
 
 // закрытие бд
 db.close();
+}

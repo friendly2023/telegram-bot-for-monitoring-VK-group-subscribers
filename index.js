@@ -66,9 +66,6 @@ function outputMessage() {
             const groupIdTime=text.slice(5);
             const time=text.slice(-20)
             const groupId = groupIdTime.slice(0, -21);
-            // console.log(groupIdTime)
-            // console.log(time)
-            // console.log(groupId)
             return await comparisonRequestsToDB.comparisonCommunitiesByTime(groupId, time)
                 .then(result => bot.sendMessage(chatId, `${result}`));
         } else if(text.slice(0, 4) == 'new'){
