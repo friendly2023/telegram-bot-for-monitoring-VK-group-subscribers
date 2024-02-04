@@ -1,3 +1,4 @@
+//v 1.0
 const fs = require('fs')
 const { token } = require('./serviceKey/telegramKey.js');
 const TelegramApi = require('node-telegram-bot-api')
