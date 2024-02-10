@@ -1,0 +1,1 @@
+export const serviceKey: string = "12345";

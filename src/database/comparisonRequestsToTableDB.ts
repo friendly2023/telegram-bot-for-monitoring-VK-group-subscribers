@@ -1,6 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 // const communitiesUtils = require('../bot_VK_get/bot.js');
-import { communitiesUtils } from '../bot_VK_get/bot';
+import { getNewGroupMembersData } from '../bot_VK_get/bot';
 
 // открытие БД
 let db = new sqlite3.Database('./database/vkDB.db', (err) => {
