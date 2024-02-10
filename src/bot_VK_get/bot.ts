@@ -1,5 +1,5 @@
 var fs = require('fs');
-import type { serviceKey } from '../serviceKey/vkKey.ts';
+import { serviceKey } from '../serviceKey/vkKey';
 
 export async function getNewGroupMembersData(groupId: string) {
     return fetch("https://api.vk.com/method/groups.getMembers", {
