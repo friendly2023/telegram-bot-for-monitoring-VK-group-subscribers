@@ -1,7 +1,7 @@
 var fs = require('fs');
 import { serviceKey } from '../serviceKey/vkKey';
 
-export async function getNewGroupMembersData(groupId: string) {
+export async function getNewGroupMembersData(groupId: string): Promise<string> {
     return fetch("https://api.vk.com/method/groups.getMembers", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -15,7 +15,7 @@ export async function getNewGroupMembersData(groupId: string) {
         .then(data => JSON.stringify(data))
 }
 
-export async function getCommunityName(groupId: string) {
+export async function getCommunityName(groupId: string): Promise<string | void> {
     return fetch("https://api.vk.com/method/groups.getById", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",

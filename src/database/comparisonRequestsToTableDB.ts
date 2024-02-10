@@ -1,33 +1,30 @@
 const sqlite3 = require('sqlite3').verbose();
-// const communitiesUtils = require('../bot_VK_get/bot.js');
 import { getNewGroupMembersData } from '../bot_VK_get/bot';
 
 // открытие БД
-let db = new sqlite3.Database('./database/vkDB.db', (err) => {
+let db = new sqlite3.Database('./database/vkDB.db', (err: any) => {
     if (err) {
         console.error(err.message);
     }
 });
 
 // (async () => console.log(await comparisonCommunitiesByTime('richie.r.dragon', '24.11.2023, 16:33:32')))()
-exports.comparisonCommunitiesByTime = comparisonCommunitiesByTime;
-exports.comparisonID=comparisonID;
 
-async function comparisonCommunitiesByTime(communityId, recordingTime) {
+export async function comparisonCommunitiesByTime(communityId, recordingTime) {
     let oldData = await requestByUserJson(communityId, recordingTime);
     let oldDataID = JSON.parse(oldData).response.items.map(item => item.id);
-    
-    let newData = await communitiesUtils.getNewGroupMembersData(communityId);
+
+    let newData = await getNewGroupMembersData(communityId);
     let newDataID = JSON.parse(newData).response.items.map(item => item.id)
 
-    let comparison= await comparisonID(oldDataID,newDataID)
+    let comparison = await comparisonID(oldDataID, newDataID)
     return comparison
 }
 
-async function comparisonID(oldDataID,newDataID) {
+export async function comparisonID(oldDataID, newDataID) {
     let subscribed = newDataID.filter(x => !oldDataID.includes(x));
     let subscrib = await gettingResultsSubscribers(subscribed);
-    
+
     let unSubscribed = oldDataID.filter(x => !newDataID.includes(x));
     let unSubscrib = await gettingResultsNoSubscribers(unSubscribed);
     return `${subscrib};
@@ -41,13 +38,13 @@ async function requestByUserJson(communityId, recordingTime) {//вывод за�
 }
 
 async function requestResultSelectJson(communityId, recordingTime) {//запрос строки json выбранного времени
-    let sql = `SELECT jsonFollowersList
+    let sql: string = `SELECT jsonFollowersList
     FROM communitiesList
     where communityId='${communityId}' and recordingTime='${recordingTime}'`
 
     return new Promise(
         (resolve, reject) => {
-            result = db.all(sql, [], (err, rows) => {
+            result = db.all(sql, [], (err: any, rows) => {
                 if (err) {
                     console.error(err.message);
                 }
