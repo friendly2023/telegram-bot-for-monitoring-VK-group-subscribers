@@ -39,7 +39,7 @@ function outputMessage(){
     })
 }
 
-async function creatureArrayCommunities(chatId: number) {//подключение для кнопок '/communities'
+async function creatureArrayCommunities(chatId: number):Promise<any> {//подключение для кнопок '/communities'
     let buttonGeneratorArray:any = await searchFileTarget(chatId)
     if (buttonGeneratorArray.length == 0) {
         return { reply_markup: { inline_keyboard: [[{ text: '<<пусто>>', callback_data: `new` }],
@@ -49,10 +49,10 @@ async function creatureArrayCommunities(chatId: number) {//подключени�
     }
 }
 
-async function searchFileTarget(chatId: number) {//поиск в бд+генерация массива для кнопки
+async function searchFileTarget(chatId: number):Promise<any[]> {//поиск в бд+генерация массива для кнопки
     let idArray: string[] = await creatingIdArray(chatId)
     let titleArray: number[] = await creatingTitleArray(chatId)
-    let buttonsArray:any = []
+    let buttonsArray:any[] = []
     for (let i = 0; i < idArray.length; i++) {
         buttonsArray.push([{ text: titleArray[i], callback_data: `groupId:${idArray[i]}` }])
     }

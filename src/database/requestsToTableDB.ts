@@ -8,18 +8,18 @@ let db = new sqlite3.Database('./src/database/vkDB.db', (err:any) => {
 
 export async function creatingIdArray(telegramId: number) {//создание массива id сообществ
     let arrayDataCommunitiesTitleCommunityId = await requestByUser(telegramId)
-    let communitiesList=[]
+    let communitiesList: any[] = []
     for (let i = 0; i < arrayDataCommunitiesTitleCommunityId.length; i++) {
-        communitiesList.push(arrayDataCommunitiesTitleCommunityId[i].communityId)   
+        communitiesList.push(arrayDataCommunitiesTitleCommunityId[i].communityId)
     }
     return communitiesList
 }
 
-export async function creatingTitleArray(telegramId:number) {//создание массива названий сообществ
+export async function creatingTitleArray(telegramId: number) {//создание массива названий сообществ
     let arrayDataCommunitiesTitleCommunityId = await requestByUser(telegramId)
-    let communitiesList=[]
+    let communitiesList: any[] = []
     for (let i = 0; i < arrayDataCommunitiesTitleCommunityId.length; i++) {
-        communitiesList.push(arrayDataCommunitiesTitleCommunityId[i].title)   
+        communitiesList.push(arrayDataCommunitiesTitleCommunityId[i].title)
     }
     return communitiesList
 }
