@@ -2,6 +2,7 @@ import { token } from './serviceKey/telegramKey';
 import TelegramApi from 'node-telegram-bot-api';
 const bot: any = new TelegramApi(token, { polling: true });
 import {creatingIdArray, creatingTitleArray} from './database/requestsToTableDB'
+import {writeToFileSQL} from './database/writingToTableDB'
 
 bot.setMyCommands([
     {
@@ -36,10 +37,24 @@ function outputMessage(){
             return await bot.sendMessage(chatId, `Список сообществ: `,
                 await creatureArrayCommunities(chatId));
         }
+        if (text === '/new') {
+            return await bot.sendMessage(chatId, `Пришлите ссылку на сообщество которое хотите добавить`);
+        }
+        if (text === '/del') {
+            return await bot.sendMessage(chatId, `Сообщества для удаления: `,
+                await creatureArrayCommunities(chatId));
+        }
+        if (text.slice(0, 15) == 'https://vk.com/') {
+            let groupId: string = text.slice(15);
+            let firstName: string = msg.from.first_name
+            return await writeToFileSQL(chatId, firstName, groupId)
+                .then(result => bot.sendMessage(chatId, `${result}`));
+        }
+        return await bot.sendMessage(chatId, `Хз о чем ты..`);
     })
 }
 
-async function creatureArrayCommunities(chatId: number):Promise<any> {//подключение для кнопок '/communities'
+async function creatureArrayCommunities(chatId: number):Promise<any> {//подключение для кнопок '/communities' и '/del'
     let buttonGeneratorArray:any = await searchFileTarget(chatId)
     if (buttonGeneratorArray.length == 0) {
         return { reply_markup: { inline_keyboard: [[{ text: '<<пусто>>', callback_data: `new` }],
