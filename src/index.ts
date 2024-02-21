@@ -3,6 +3,7 @@ import TelegramApi from 'node-telegram-bot-api';
 const bot: any = new TelegramApi(token, { polling: true });
 import {creatingIdArray, creatingTitleArray, creatingTitleArrayTime} from './database/requestsToTableDB'
 import {writeToFileSQL} from './database/writingToTableDB'
+import {delToFileSQL} from './database/delToTableDB'
 
 
 bot.setMyCommands([
@@ -36,15 +37,15 @@ function outputMessage(){
         }
         if (text === '/communities') {
             return await bot.sendMessage(chatId, `Список сообществ: `,
-                await creatureArrayCommunities(chatId));
+                await creatureArrayCommunities(chatId, 'groupId:'));
         }
         if (text === '/new') {
             return await bot.sendMessage(chatId, `Пришлите ссылку на сообщество которое хотите добавить`);
         }
-        // if (text === '/del') {
-        //     return await bot.sendMessage(chatId, `Сообщества для удаления: `,
-        //         await creatureArrayCommunities(chatId));
-        // }
+        if (text === '/del') {
+            return await bot.sendMessage(chatId, `Сообщества для удаления: `,
+                await creatureArrayCommunities(chatId, 'del:'));
+        }
         if (text.slice(0, 15) == 'https://vk.com/') {
             let groupId: string = text.slice(15);
             let firstName: string = msg.from.first_name
@@ -61,12 +62,16 @@ function outputMessage(){
             const communityId:string = text.slice(8);
             return await bot.sendMessage(chatId, `Выберите время для сравнения: `,
             await creatureArrayTimeCommunities(communityId))
+        }else if (text.slice(0, 4) == 'del:') {
+            const communityId:string = text.slice(4);
+            return await delToFileSQL(chatId, communityId)
+                .then(result => bot.sendMessage(chatId, `${result}`));
         }
     })
 }
 
-async function creatureArrayCommunities(chatId: number):Promise<any> {//подключение для кнопок '/communities' и '/del'
-    let buttonGeneratorArray:any = await searchFileTarget(chatId)
+async function creatureArrayCommunities(chatId: number, option: string):Promise<any> {//подключение для кнопок '/communities' и '/del'
+    let buttonGeneratorArray:any = await searchFileTarget(chatId, option)
     if (buttonGeneratorArray.length == 0) {
         return { reply_markup: { inline_keyboard: [[{ text: '<<пусто>>', callback_data: `new` }],
                                                    [{ text: 'Добавить сообщество?', callback_data: `new` }]] } }
@@ -75,12 +80,12 @@ async function creatureArrayCommunities(chatId: number):Promise<any> {//подк
     }
 }
 
-async function searchFileTarget(chatId: number):Promise<any[]> {//поиск в бд+генерация массива для кнопки
+async function searchFileTarget(chatId: number, option: string):Promise<any[]> {//поиск в бд+генерация массива для кнопки
     let idArray: string[] = await creatingIdArray(chatId)
     let titleArray: number[] = await creatingTitleArray(chatId)
     let buttonsArray:any[] = []
     for (let i = 0; i < idArray.length; i++) {
-        buttonsArray.push([{ text: titleArray[i], callback_data: `groupId:${idArray[i]}` }])
+        buttonsArray.push([{ text: titleArray[i], callback_data: `${option}${idArray[i]}` }])
     }
     return buttonsArray
 }
