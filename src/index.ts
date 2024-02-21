@@ -1,8 +1,9 @@
 import { token } from './serviceKey/telegramKey';
 import TelegramApi from 'node-telegram-bot-api';
 const bot: any = new TelegramApi(token, { polling: true });
-import {creatingIdArray, creatingTitleArray} from './database/requestsToTableDB'
+import {creatingIdArray, creatingTitleArray, creatingTitleArrayTime} from './database/requestsToTableDB'
 import {writeToFileSQL} from './database/writingToTableDB'
+
 
 bot.setMyCommands([
     {
@@ -25,11 +26,11 @@ bot.setMyCommands([
 
 outputMessage()
 function outputMessage(){
-    bot.on('message', async (msg: { text: string; chat: { id: number; }; from: { first_name: any; }; }) =>{
+    bot.on('message', async (msg: { text: string; chat: { id: number; }; from: { first_name: string; }; }) =>{
         // console.log(msg);
         const text: string = msg.text;
         const chatId: number = msg.chat.id;
-
+        
         if (text === '/start') {
             return await bot.sendMessage(chatId, `Добро пожаловать ${msg.from.first_name}`);
         }
@@ -40,10 +41,10 @@ function outputMessage(){
         if (text === '/new') {
             return await bot.sendMessage(chatId, `Пришлите ссылку на сообщество которое хотите добавить`);
         }
-        if (text === '/del') {
-            return await bot.sendMessage(chatId, `Сообщества для удаления: `,
-                await creatureArrayCommunities(chatId));
-        }
+        // if (text === '/del') {
+        //     return await bot.sendMessage(chatId, `Сообщества для удаления: `,
+        //         await creatureArrayCommunities(chatId));
+        // }
         if (text.slice(0, 15) == 'https://vk.com/') {
             let groupId: string = text.slice(15);
             let firstName: string = msg.from.first_name
@@ -51,6 +52,16 @@ function outputMessage(){
                 .then(result => bot.sendMessage(chatId, `${result}`));
         }
         return await bot.sendMessage(chatId, `Хз о чем ты..`);
+    })
+
+    bot.on('callback_query', async (msg: { message: { chat: { id: number; }; }; data: string; })=>{
+        const chatId: number = msg.message.chat.id;
+        const text:string = msg.data;
+        if(text.slice(0, 8) == 'groupId:'){
+            const communityId:string = text.slice(8);
+            return await bot.sendMessage(chatId, `Выберите время для сравнения: `,
+            await creatureArrayTimeCommunities(communityId))
+        }
     })
 }
 
@@ -70,6 +81,19 @@ async function searchFileTarget(chatId: number):Promise<any[]> {//поиск в 
     let buttonsArray:any[] = []
     for (let i = 0; i < idArray.length; i++) {
         buttonsArray.push([{ text: titleArray[i], callback_data: `groupId:${idArray[i]}` }])
+    }
+    return buttonsArray
+}
+
+async function creatureArrayTimeCommunities(communityId:string):Promise<any> {//подключение для кнопок ответов на кнопки '/communities'
+    return { reply_markup: { inline_keyboard: await requestTime(communityId) } }
+}
+
+async function requestTime(communityId:string) {
+    let timeArray:string[] = await creatingTitleArrayTime(communityId)
+    let buttonsArray:any = []
+    for (let i = 0; i < timeArray.length; i++) {
+        buttonsArray.push([{ text: timeArray[i], callback_data: `time:${communityId}:${timeArray[i]}` }])
     }
     return buttonsArray
 }

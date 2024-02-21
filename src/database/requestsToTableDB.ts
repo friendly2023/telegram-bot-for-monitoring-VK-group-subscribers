@@ -40,7 +40,38 @@ function resultSelect(telegramId: number): any {//запрос
 
     return new Promise(
         (resolve: any, reject: any) => {
-            let result: any = db.all(sql, [], (err: any, rows: any) => {
+            let result: any = db.all(sql, [], (err: { message: any; }, rows: any) => {
+                if (err) {
+                    console.error(err.message);
+                }
+                resolve(rows)
+            })
+        }
+    )
+}
+
+export async function creatingTitleArrayTime(communityId:string):Promise<any> {
+    let timeCommunityId:any = await requestByUserTime(communityId);
+    let communitiesList:string[]=[]
+    for(let i = 0; i < timeCommunityId.length; i++){
+        communitiesList.push(timeCommunityId[i].recordingTime) 
+    }
+    return communitiesList
+}
+
+async function requestByUserTime(communityId:string):Promise<any> {//вывод запроса в переменную
+    let selectResult:any = await resultSelectTime(communityId)
+    return selectResult
+}
+
+function resultSelectTime(communityId:string):Promise<any> {//запрос
+    let sql = `SELECT *
+    FROM communitiesList
+    where communityId='${communityId}'`
+
+    return new Promise(
+        (resolve, reject) => {
+            let result:any =  db.all(sql, [], (err: { message: any; }, rows: any) => {
                 if (err) {
                     console.error(err.message);
                 }
