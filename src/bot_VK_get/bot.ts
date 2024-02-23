@@ -1,6 +1,6 @@
 import { serviceKey } from '../serviceKey/vkKey';
 
-export async function getNewGroupMembersData(groupId: string):Promise<string> {
+export async function getNewGroupMembersData(groupId: string): Promise<string> {
     return fetch("https://api.vk.com/method/groups.getMembers", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -14,7 +14,7 @@ export async function getNewGroupMembersData(groupId: string):Promise<string> {
         .then(data => JSON.stringify(data))
 }
 
-export async function getCommunityName(groupId: string):Promise<string|void> {
+export async function getCommunityName(groupId: string): Promise<string | void> {
     return fetch("https://api.vk.com/method/groups.getById", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -28,8 +28,8 @@ export async function getCommunityName(groupId: string):Promise<string|void> {
         .then(data => {
             const communityName = data.response[0].name;
             return `${communityName}`;
-          })
-          .catch(error => {
+        })
+        .catch(error => {
             console.error('Error:', error);
-          });
+        });
 }

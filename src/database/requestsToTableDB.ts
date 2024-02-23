@@ -1,6 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 
-let db = new sqlite3.Database('./src/database/vkDB.db', (err:any) => {
+let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
     if (err) {
         console.error(err.message);
     }
@@ -23,8 +23,6 @@ export async function creatingTitleArray(telegramId: number) {//создание
     }
     return communitiesList
 }
-
-
 
 async function requestByUser(telegramId: number) {//вывод запроса в переменную
     let selectResult: any = await resultSelect(telegramId)
@@ -50,28 +48,28 @@ function resultSelect(telegramId: number): any {//запрос
     )
 }
 
-export async function creatingTitleArrayTime(communityId:string):Promise<any> {
-    let timeCommunityId:any = await requestByUserTime(communityId);
-    let communitiesList:string[]=[]
-    for(let i = 0; i < timeCommunityId.length; i++){
-        communitiesList.push(timeCommunityId[i].recordingTime) 
+export async function creatingTitleArrayTime(communityId: string): Promise<any> {
+    let timeCommunityId: any = await requestByUserTime(communityId);
+    let communitiesList: string[] = []
+    for (let i = 0; i < timeCommunityId.length; i++) {
+        communitiesList.push(timeCommunityId[i].recordingTime)
     }
     return communitiesList
 }
 
-async function requestByUserTime(communityId:string):Promise<any> {//вывод запроса в переменную
-    let selectResult:any = await resultSelectTime(communityId)
+async function requestByUserTime(communityId: string): Promise<any> {//вывод запроса в переменную
+    let selectResult: any = await resultSelectTime(communityId)
     return selectResult
 }
 
-function resultSelectTime(communityId:string):Promise<any> {//запрос
+function resultSelectTime(communityId: string): Promise<any> {//запрос
     let sql = `SELECT *
     FROM communitiesList
     where communityId='${communityId}'`
 
     return new Promise(
         (resolve, reject) => {
-            let result:any =  db.all(sql, [], (err: { message: any; }, rows: any) => {
+            let result: any = db.all(sql, [], (err: { message: any; }, rows: any) => {
                 if (err) {
                     console.error(err.message);
                 }

@@ -1,14 +1,14 @@
 const sqlite3 = require('sqlite3').verbose();
-import {getNewGroupMembersData, getCommunityName} from '../bot_VK_get/bot'
-import {comparisonID} from './comparisonRequestsToTableDB'
+import { getNewGroupMembersData, getCommunityName } from '../bot_VK_get/bot'
+import { comparisonID } from './comparisonRequestsToTableDB'
 
-let db = new sqlite3.Database('./src/database/vkDB.db', (err:any) => {
+let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
     if (err) {
         console.error(err.message);
     }
 });
 
-export async function writeToFileSQL(telegramId: number, firstName: string, communityId: string):Promise<string> {
+export async function writeToFileSQL(telegramId: number, firstName: string, communityId: string): Promise<string> {
     let newDataGroup: string = await getNewGroupMembersData(communityId);
 
     if (newDataGroup.slice(0, 21) == `{"response":{"count":`) {
@@ -20,59 +20,59 @@ export async function writeToFileSQL(telegramId: number, firstName: string, comm
     }
 }
 
-async function writeToSQL(telegramId:number, firstName:string, jsonFollowersList:string, title:string|void, communityId: string) {
-    let check:string= await comparisonCommunitySubscribers(communityId);
-  db.serialize(() => {
+async function writeToSQL(telegramId: number, firstName: string, jsonFollowersList: string, title: string | void, communityId: string) {
+    let check: string = await comparisonCommunitySubscribers(communityId);
+    db.serialize(() => {
 
-    db.run(`INSERT INTO users (telegramId, firstName)
+        db.run(`INSERT INTO users (telegramId, firstName)
             VALUES ('${telegramId}', '${firstName}')
             ON CONFLICT(telegramId) DO UPDATE SET
             firstName='${firstName}';`)
 
-    db.run(`INSERT INTO communities (communityId, title)
+        db.run(`INSERT INTO communities (communityId, title)
             VALUES ('${communityId}', '${title}')
             ON CONFLICT(communityId) DO UPDATE SET
             title='${title}';`)
 
-    db.run(`INSERT INTO usersToCommunities(telegramId, communityId)
+        db.run(`INSERT INTO usersToCommunities(telegramId, communityId)
             VALUES ('${telegramId}', '${communityId}');`)
 
-    db.run(`DELETE FROM usersToCommunities
+        db.run(`DELETE FROM usersToCommunities
             WHERE rowid NOT IN (
             SELECT MIN(rowid)
             FROM usersToCommunities
             GROUP BY telegramId, communityId)`)
 
-    if (check=="ok") {
-      db.run(`UPDATE communitiesList 
+        if (check == "ok") {
+            db.run(`UPDATE communitiesList 
               SET recordingTime='${new Date().toLocaleString()}'
               WHERE jsonFollowersList='${jsonFollowersList}';`)
-    }else{
-      db.run(`INSERT INTO communitiesList (communityId, recordingTime, jsonFollowersList)
+        } else {
+            db.run(`INSERT INTO communitiesList (communityId, recordingTime, jsonFollowersList)
               VALUES ('${communityId}', '${new Date().toLocaleString()}', '${jsonFollowersList}');`)
-    }
-  })
+        }
+    })
 }
 
-async function comparisonCommunitySubscribers(communityId: string):Promise<string> {
+async function comparisonCommunitySubscribers(communityId: string): Promise<string> {
     let oldData: any = await requestLastRecord(communityId);
     if (oldData.length == 0) {
         return "not ok"
     } else {
         let oldDataID: number[] = JSON.parse(oldData[0].jsonFollowersList).response.items.map((item: { id: number; }) => item.id);
-        let newData:string = await getNewGroupMembersData(communityId);
+        let newData: string = await getNewGroupMembersData(communityId);
         let newDataID: number[] = JSON.parse(newData).response.items.map((item: { id: number; }) => item.id)
-        let comparison:string = await comparisonID(oldDataID, newDataID)
+        let comparison: string = await comparisonID(oldDataID, newDataID)
 
         if (comparison.includes("Новых подписчиков нет") && comparison.includes("Новых отписавшихся нет")) {
             return "ok"
-          } else {
+        } else {
             return "not ok"
-          }
+        }
     }
 }
 
-async function requestLastRecord(communityId: string):Promise<any> {//запрос последнего записанного json для сообщества
+async function requestLastRecord(communityId: string): Promise<any> {//запрос последнего записанного json для сообщества
     let sql = `SELECT jsonFollowersList
       FROM communitiesList
       where communityId='${communityId}'
