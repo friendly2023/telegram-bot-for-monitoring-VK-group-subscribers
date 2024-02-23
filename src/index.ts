@@ -4,7 +4,7 @@ const bot: any = new TelegramApi(token, { polling: true });
 import {creatingIdArray, creatingTitleArray, creatingTitleArrayTime} from './database/requestsToTableDB'
 import {writeToFileSQL} from './database/writingToTableDB'
 import {delToFileSQL} from './database/delToTableDB'
-
+import {comparisonCommunitiesByTime} from './database/comparisonRequestsToTableDB'
 
 bot.setMyCommands([
     {
@@ -61,8 +61,14 @@ function outputMessage(){
         if(text.slice(0, 8) == 'groupId:'){
             const communityId:string = text.slice(8);
             return await bot.sendMessage(chatId, `Выберите время для сравнения: `,
-            await creatureArrayTimeCommunities(communityId))
-        }else if (text.slice(0, 4) == 'del:') {
+            await creatureArrayTimeCommunities(communityId));
+        }else if (text.slice(0, 5) == 'time:'){
+            const communityIdTime:string=text.slice(5);
+            const time:string=text.slice(-20);
+            const communityId:string = communityIdTime.slice(0, -21);
+            return await comparisonCommunitiesByTime(communityId, time)
+                .then(result => bot.sendMessage(chatId, `${result}`));
+        }else if(text.slice(0, 4) == 'del:') {
             const communityId:string = text.slice(4);
             return await delToFileSQL(chatId, communityId)
                 .then(result => bot.sendMessage(chatId, `${result}`));

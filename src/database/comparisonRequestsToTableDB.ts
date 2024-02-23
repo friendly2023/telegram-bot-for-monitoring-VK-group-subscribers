@@ -1,4 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
+import {getNewGroupMembersData} from '../bot_VK_get/bot'
+
+class SelectResult{
+    jsonFollowersList!: string;
+}
 
 let db = new sqlite3.Database('./src/database/vkDB.db', (err:any) => {
     if (err) {
@@ -35,4 +40,37 @@ async function gettingResultsNoSubscribers(noSubscribers: number[]):Promise<stri
     } else {
         return 'Новых отписавшихся нет'
     }
+}
+
+export async function comparisonCommunitiesByTime(communityId:string, recordingTime:string) {
+    let oldData: string = await requestByUserJson(communityId, recordingTime);
+    let oldDataID: number[] = JSON.parse(oldData).response.items.map((item: { id: number; })=>item.id);
+
+    let newData:string = await getNewGroupMembersData(communityId);
+    let newDataID: number[] = JSON.parse(newData).response.items.map((item: { id: number; }) => item.id);
+
+    let comparison:string= await comparisonID(oldDataID,newDataID);
+    return comparison
+}
+
+async function requestByUserJson(communityId:string, recordingTime:string):Promise<string> {//вывод запроса в переменную
+    let selectResult:SelectResult[]= await requestResultSelectJson(communityId, recordingTime);
+    return selectResult[0].jsonFollowersList
+}
+
+async function requestResultSelectJson(communityId:string, recordingTime:string):Promise<SelectResult[]> {//запрос строки json выбранного времени
+    let sql = `SELECT jsonFollowersList
+    FROM communitiesList
+    where communityId='${communityId}' and recordingTime='${recordingTime}'`
+
+    return new Promise(
+        (resolve, reject) => {
+            let result:any = db.all(sql, [], (err: { message: any; }, rows: any) => {
+                if (err) {
+                    console.error(err.message);
+                }
+                resolve(rows)
+            })
+        }
+    )
 }
