@@ -6,6 +6,10 @@ import { writeToFileSQL } from './database/writingToTableDB'
 import { delToFileSQL } from './database/delToTableDB'
 import { comparisonCommunitiesByTime } from './database/comparisonRequestsToTableDB'
 
+class Button {
+    reply_markup!: object;
+}
+
 bot.setMyCommands([
     {
         command: '/start',
@@ -28,7 +32,6 @@ bot.setMyCommands([
 outputMessage()
 function outputMessage() {
     bot.on('message', async (msg: { text: string; chat: { id: number; }; from: { first_name: string; }; }) => {
-        // console.log(msg);
         const text: string = msg.text;
         const chatId: number = msg.chat.id;
 
@@ -80,8 +83,8 @@ function outputMessage() {
     })
 }
 
-async function creatureArrayCommunities(chatId: number, option: string): Promise<any> {//подключение для кнопок '/communities' и '/del'
-    let buttonGeneratorArray: any = await searchFileTarget(chatId, option)
+async function creatureArrayCommunities(chatId: number, option: string): Promise<Button> {//подключение для кнопок '/communities' и '/del'
+    let buttonGeneratorArray: object[] = await searchFileTarget(chatId, option)
     if (buttonGeneratorArray.length == 0) {
         return {
             reply_markup: {
@@ -94,23 +97,23 @@ async function creatureArrayCommunities(chatId: number, option: string): Promise
     }
 }
 
-async function searchFileTarget(chatId: number, option: string): Promise<any[]> {//поиск в бд+генерация массива для кнопки
+async function searchFileTarget(chatId: number, option: string): Promise<object[]> {//поиск в бд+генерация массива для кнопки
     let idArray: string[] = await creatingIdArray(chatId)
-    let titleArray: number[] = await creatingTitleArray(chatId)
-    let buttonsArray: any[] = []
+    let titleArray: string[] = await creatingTitleArray(chatId)
+    let buttonsArray: object[] = []
     for (let i = 0; i < idArray.length; i++) {
         buttonsArray.push([{ text: titleArray[i], callback_data: `${option}${idArray[i]}` }])
     }
     return buttonsArray
 }
 
-async function creatureArrayTimeCommunities(communityId: string): Promise<any> {//подключение для кнопок ответов на кнопки '/communities'
+async function creatureArrayTimeCommunities(communityId: string): Promise<Button> {//подключение для кнопок ответов на кнопки '/communities'
     return { reply_markup: { inline_keyboard: await requestTime(communityId) } }
 }
 
-async function requestTime(communityId: string) {
+async function requestTime(communityId: string): Promise<object[]> {
     let timeArray: string[] = await creatingTitleArrayTime(communityId)
-    let buttonsArray: any = []
+    let buttonsArray: object[] = []
     for (let i = 0; i < timeArray.length; i++) {
         buttonsArray.push([{ text: timeArray[i], callback_data: `time:${communityId}:${timeArray[i]}` }])
     }

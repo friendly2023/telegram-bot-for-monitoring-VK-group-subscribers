@@ -2,6 +2,10 @@ const sqlite3 = require('sqlite3').verbose();
 import { getNewGroupMembersData, getCommunityName } from '../bot_VK_get/bot'
 import { comparisonID } from './comparisonRequestsToTableDB'
 
+class RequestLastRecord {
+    jsonFollowersList!: string;
+}
+
 let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
     if (err) {
         console.error(err.message);
@@ -20,7 +24,7 @@ export async function writeToFileSQL(telegramId: number, firstName: string, comm
     }
 }
 
-async function writeToSQL(telegramId: number, firstName: string, jsonFollowersList: string, title: string | void, communityId: string) {
+async function writeToSQL(telegramId: number, firstName: string, jsonFollowersList: string, title: string | void, communityId: string): Promise<void> {
     let check: string = await comparisonCommunitySubscribers(communityId);
     db.serialize(() => {
 
@@ -55,7 +59,7 @@ async function writeToSQL(telegramId: number, firstName: string, jsonFollowersLi
 }
 
 async function comparisonCommunitySubscribers(communityId: string): Promise<string> {
-    let oldData: any = await requestLastRecord(communityId);
+    let oldData: RequestLastRecord[] = await requestLastRecord(communityId);
     if (oldData.length == 0) {
         return "not ok"
     } else {
@@ -72,7 +76,7 @@ async function comparisonCommunitySubscribers(communityId: string): Promise<stri
     }
 }
 
-async function requestLastRecord(communityId: string): Promise<any> {//запрос последнего записанного json для сообщества
+async function requestLastRecord(communityId: string): Promise<RequestLastRecord[]> {//запрос последнего записанного json для сообщества
     let sql = `SELECT jsonFollowersList
       FROM communitiesList
       where communityId='${communityId}'
