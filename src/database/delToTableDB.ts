@@ -1,8 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-
-class SelectResult {
-    title!: string;
-}
+import { SelectResultDB } from './comparisonRequestsToTableDB'
 
 export async function delToFileSQL(chatId: number, communityId: string): Promise<string> {
     let delCommunities: void = await delToSQL(chatId, communityId);
@@ -28,11 +25,11 @@ async function delToSQL(telegramId: number, communityId: string): Promise<void> 
 }
 
 async function gettingResponseFromDB(communityId: string): Promise<string> {//вывод запроса в переменную
-    let selectResult: SelectResult[] = await gettingCommunityNameFromDB(communityId);
+    let selectResult: SelectResultDB[] = await gettingCommunityNameFromDB(communityId);
     return selectResult[0].title
 }
 
-async function gettingCommunityNameFromDB(communityId: string): Promise<SelectResult[]> {
+async function gettingCommunityNameFromDB(communityId: string): Promise<SelectResultDB[]> {
     let sql = `SELECT title
     FROM communities
     where communityId='${communityId}'`

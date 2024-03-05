@@ -1,15 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-
-class SelectResult {
-    title!: string;
-    communityId!: string;
-}
-
-class ResultSelectTime {
-    communityId!: string;
-    recordingTime!: string;
-    jsonFollowersList!: string;
-}
+import { SelectResultDB } from './comparisonRequestsToTableDB'
 
 let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
     if (err) {
@@ -18,7 +8,7 @@ let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
 });
 
 export async function creatingIdArray(telegramId: number): Promise<string[]> {//создание массива id сообществ
-    let arrayDataCommunitiesTitleCommunityId: SelectResult[] = await requestByUser(telegramId)
+    let arrayDataCommunitiesTitleCommunityId: SelectResultDB[] = await requestByUser(telegramId)
     let communitiesList: string[] = []
     for (let i = 0; i < arrayDataCommunitiesTitleCommunityId.length; i++) {
         communitiesList.push(arrayDataCommunitiesTitleCommunityId[i].communityId)
@@ -27,7 +17,7 @@ export async function creatingIdArray(telegramId: number): Promise<string[]> {//
 }
 
 export async function creatingTitleArray(telegramId: number): Promise<string[]> {//создание массива названий сообществ
-    let arrayDataCommunitiesTitleCommunityId: SelectResult[] = await requestByUser(telegramId)
+    let arrayDataCommunitiesTitleCommunityId: SelectResultDB[] = await requestByUser(telegramId)
     let communitiesList: string[] = []
     for (let i = 0; i < arrayDataCommunitiesTitleCommunityId.length; i++) {
         communitiesList.push(arrayDataCommunitiesTitleCommunityId[i].title)
@@ -35,12 +25,12 @@ export async function creatingTitleArray(telegramId: number): Promise<string[]> 
     return communitiesList
 }
 
-async function requestByUser(telegramId: number): Promise<SelectResult[]> {//вывод запроса в переменную
-    let selectResult: SelectResult[] = await resultSelect(telegramId)
+async function requestByUser(telegramId: number): Promise<SelectResultDB[]> {//вывод запроса в переменную
+    let selectResult: SelectResultDB[] = await resultSelect(telegramId)
     return selectResult
 }
 
-function resultSelect(telegramId: number): Promise<SelectResult[]> {//запрос
+function resultSelect(telegramId: number): Promise<SelectResultDB[]> {//запрос
     let sql = `SELECT c.title, c.communityId
     FROM usersToCommunities as utc
     left join communities as c
@@ -60,7 +50,7 @@ function resultSelect(telegramId: number): Promise<SelectResult[]> {//запро
 }
 
 export async function creatingTitleArrayTime(communityId: string): Promise<string[]> {
-    let timeCommunityId: ResultSelectTime[] = await requestByUserTime(communityId);
+    let timeCommunityId: SelectResultDB[] = await requestByUserTime(communityId);
     let communitiesList: string[] = []
     for (let i = 0; i < timeCommunityId.length; i++) {
         communitiesList.push(timeCommunityId[i].recordingTime)
@@ -68,12 +58,12 @@ export async function creatingTitleArrayTime(communityId: string): Promise<strin
     return communitiesList
 }
 
-async function requestByUserTime(communityId: string): Promise<ResultSelectTime[]> {//вывод запроса в переменную
-    let selectResult: ResultSelectTime[] = await resultSelectTime(communityId)
+async function requestByUserTime(communityId: string): Promise<SelectResultDB[]> {//вывод запроса в переменную
+    let selectResult: SelectResultDB[] = await resultSelectTime(communityId)
     return selectResult
 }
 
-function resultSelectTime(communityId: string): Promise<ResultSelectTime[]> {//запрос
+function resultSelectTime(communityId: string): Promise<SelectResultDB[]> {//запрос
     let sql = `SELECT *
     FROM communitiesList
     where communityId='${communityId}'`

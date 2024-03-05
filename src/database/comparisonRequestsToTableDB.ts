@@ -1,8 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
 import { getNewGroupMembersData } from '../bot_VK_get/bot'
 
-class SelectResult {
+export class SelectResultDB {
     jsonFollowersList!: string;
+    title!: string;
+    communityId!: string;
+    recordingTime!: string;
 }
 
 let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
@@ -54,11 +57,11 @@ export async function comparisonCommunitiesByTime(communityId: string, recording
 }
 
 async function requestByUserJson(communityId: string, recordingTime: string): Promise<string> {//вывод запроса в переменную
-    let selectResult: SelectResult[] = await requestResultSelectJson(communityId, recordingTime);
+    let selectResult: SelectResultDB[] = await requestResultSelectJson(communityId, recordingTime);
     return selectResult[0].jsonFollowersList
 }
 
-async function requestResultSelectJson(communityId: string, recordingTime: string): Promise<SelectResult[]> {//запрос строки json выбранного времени
+async function requestResultSelectJson(communityId: string, recordingTime: string): Promise<SelectResultDB[]> {//запрос строки json выбранного времени
     let sql = `SELECT jsonFollowersList
     FROM communitiesList
     where communityId='${communityId}' and recordingTime='${recordingTime}'`

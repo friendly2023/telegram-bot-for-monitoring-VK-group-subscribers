@@ -1,10 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 import { getNewGroupMembersData, getCommunityName } from '../bot_VK_get/bot'
-import { comparisonID } from './comparisonRequestsToTableDB'
-
-class RequestLastRecord {
-    jsonFollowersList!: string;
-}
+import { comparisonID, SelectResultDB } from './comparisonRequestsToTableDB'
 
 let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
     if (err) {
@@ -59,7 +55,7 @@ async function writeToSQL(telegramId: number, firstName: string, jsonFollowersLi
 }
 
 async function comparisonCommunitySubscribers(communityId: string): Promise<string> {
-    let oldData: RequestLastRecord[] = await requestLastRecord(communityId);
+    let oldData: SelectResultDB[] = await requestLastRecord(communityId);
     if (oldData.length == 0) {
         return "not ok"
     } else {
@@ -76,7 +72,7 @@ async function comparisonCommunitySubscribers(communityId: string): Promise<stri
     }
 }
 
-async function requestLastRecord(communityId: string): Promise<RequestLastRecord[]> {//запрос последнего записанного json для сообщества
+async function requestLastRecord(communityId: string): Promise<SelectResultDB[]> {//запрос последнего записанного json для сообщества
     let sql = `SELECT jsonFollowersList
       FROM communitiesList
       where communityId='${communityId}'
