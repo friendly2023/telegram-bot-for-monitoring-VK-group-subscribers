@@ -1,16 +1,11 @@
 const sqlite3 = require('sqlite3').verbose();
-import { SelectResultDB } from './comparisonRequestsToTableDB'
+import { SelectResultDB, db } from './comparisonRequestsToTableDB'
 
 export async function delToFileSQL(chatId: number, communityId: string): Promise<string> {
     let delCommunities: void = await delToSQL(chatId, communityId);
     let communityNameFromDB: string = await gettingResponseFromDB(communityId);
     return `Сообщество "${communityNameFromDB}" удалено`
 }
-let db = new sqlite3.Database('./src/database/vkDB.db', (err: { message: any }) => {
-    if (err) {
-        console.error(err.message);
-    }
-});
 
 async function delToSQL(telegramId: number, communityId: string): Promise<void> {
     db.serialize(() => {

@@ -1,12 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 import { getNewGroupMembersData, getCommunityName } from '../bot_VK_get/bot'
-import { comparisonID, SelectResultDB } from './comparisonRequestsToTableDB'
-
-let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
-    if (err) {
-        console.error(err.message);
-    }
-});
+import { comparisonID, SelectResultDB, db } from './comparisonRequestsToTableDB'
 
 export async function writeToFileSQL(telegramId: number, firstName: string, communityId: string): Promise<string> {
     let newDataGroup: string = await getNewGroupMembersData(communityId);

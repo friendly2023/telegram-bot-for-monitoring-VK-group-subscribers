@@ -8,7 +8,7 @@ export class SelectResultDB {
     recordingTime!: string;
 }
 
-let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
+export let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
     if (err) {
         console.error(err.message);
     }

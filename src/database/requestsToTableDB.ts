@@ -1,11 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-import { SelectResultDB } from './comparisonRequestsToTableDB'
-
-let db = new sqlite3.Database('./src/database/vkDB.db', (err: any) => {
-    if (err) {
-        console.error(err.message);
-    }
-});
+import { SelectResultDB, db } from './comparisonRequestsToTableDB'
 
 export async function creatingIdArray(telegramId: number): Promise<string[]> {//создание массива id сообществ
     let arrayDataCommunitiesTitleCommunityId: SelectResultDB[] = await requestByUser(telegramId)
