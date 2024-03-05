@@ -1,10 +1,7 @@
-var fs = require('fs');
-const { serviceKey } = require('../serviceKey/vkKey');
+import { serviceKey } from '../serviceKey/vkKey';
+import {responseToIncorrectRequest} from '../index'
 
-exports.getCommunityName = getCommunityName;
-exports.getNewGroupMembersData = getNewGroupMembersData;
-
-async function getNewGroupMembersData(groupId) {
+export async function getNewGroupMembersData(groupId: string): Promise<string> {
     return fetch("https://api.vk.com/method/groups.getMembers", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -15,10 +12,16 @@ async function getNewGroupMembersData(groupId) {
         "method": "POST"
     })
         .then(response => response.json())
-        .then(data => JSON.stringify(data))
+        .then(response => {
+            if (response.response) {
+                return JSON.stringify(response)
+            } else {
+                return responseToIncorrectRequest
+            }
+        })
 }
 
-async function getCommunityName(groupId) {
+export async function getCommunityName(groupId: string): Promise<string | void> {
     return fetch("https://api.vk.com/method/groups.getById", {
         "headers": {
             "content-type": "application/x-www-form-urlencoded",
@@ -32,8 +35,8 @@ async function getCommunityName(groupId) {
         .then(data => {
             const communityName = data.response[0].name;
             return `${communityName}`;
-          })
-          .catch(error => {
+        })
+        .catch(error => {
             console.error('Error:', error);
-          });
+        });
 }

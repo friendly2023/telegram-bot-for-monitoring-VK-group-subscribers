@@ -1,4 +1,2 @@
 node_modules/
-serviceKeyme/
-target/
-database/test.js
+serviceKey/

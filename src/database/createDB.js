@@ -1,9 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
-exports.createBD = createBD;
 
+createBD()
 async function createBD() {
 // открытие БД
-let db = new sqlite3.Database('./database/vkDB.db', (err) => {
+let db = new sqlite3.Database('./src/database/vkDB.db', (err) => {
   if (err) {
     console.error(err.message);
   }
