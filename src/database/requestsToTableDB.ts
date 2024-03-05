@@ -1,4 +1,3 @@
-const sqlite3 = require('sqlite3').verbose();
 import { SelectResultDB, db } from './comparisonRequestsToTableDB'
 
 export async function creatingIdArray(telegramId: number): Promise<string[]> {//создание массива id сообществ

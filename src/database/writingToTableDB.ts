@@ -1,4 +1,3 @@
-const sqlite3 = require('sqlite3').verbose();
 import { getNewGroupMembersData, getCommunityName } from '../bot_VK_get/bot'
 import { comparisonID, SelectResultDB, db } from './comparisonRequestsToTableDB'
 import {responseToIncorrectRequest} from '../index'

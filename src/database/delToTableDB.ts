@@ -1,4 +1,3 @@
-const sqlite3 = require('sqlite3').verbose();
 import { SelectResultDB, db } from './comparisonRequestsToTableDB'
 
 export async function delToFileSQL(chatId: number, communityId: string): Promise<string> {
