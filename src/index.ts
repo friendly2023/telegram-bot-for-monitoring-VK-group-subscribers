@@ -6,6 +6,8 @@ import { writeToFileSQL } from './database/writingToTableDB'
 import { delToFileSQL } from './database/delToTableDB'
 import { comparisonCommunitiesByTime } from './database/comparisonRequestsToTableDB'
 
+export let responseToIncorrectRequest: string = 'Ответа на запрос не найден'
+
 class Button {
     reply_markup!: object;
 }
@@ -55,7 +57,7 @@ function outputMessage() {
             return await writeToFileSQL(chatId, firstName, groupId)
                 .then(result => bot.sendMessage(chatId, `${result}`));
         }
-        return await bot.sendMessage(chatId, `Хз о чем ты..`);
+        return await bot.sendMessage(chatId, `${responseToIncorrectRequest}`);
     })
 
     bot.on('callback_query', async (msg: { message: { chat: { id: number; }; }; data: string; }) => {
@@ -78,7 +80,7 @@ function outputMessage() {
             return await delToFileSQL(chatId, communityId)
                 .then(result => bot.sendMessage(chatId, `${result}`));
         } else {
-            console.log('Ответа на запрос не найден')
+            console.log(`${responseToIncorrectRequest}`)
         }
     })
 }

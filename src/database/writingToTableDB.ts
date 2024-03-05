@@ -1,11 +1,12 @@
 const sqlite3 = require('sqlite3').verbose();
 import { getNewGroupMembersData, getCommunityName } from '../bot_VK_get/bot'
 import { comparisonID, SelectResultDB, db } from './comparisonRequestsToTableDB'
+import {responseToIncorrectRequest} from '../index'
 
 export async function writeToFileSQL(telegramId: number, firstName: string, communityId: string): Promise<string> {
     let newDataGroup: string = await getNewGroupMembersData(communityId);
 
-    if (newDataGroup.slice(0, 21) == `{"response":{"count":`) {
+    if (newDataGroup != responseToIncorrectRequest) {
         let newNameGroup: string | void = await getCommunityName(communityId);
         let dataInSQL = await writeToSQL(telegramId, firstName, newDataGroup, newNameGroup, communityId);
         return `Данные  по сообществу "${newNameGroup}" добавлены/обновлены`

@@ -1,4 +1,5 @@
 import { serviceKey } from '../serviceKey/vkKey';
+import {responseToIncorrectRequest} from '../index'
 
 export async function getNewGroupMembersData(groupId: string): Promise<string> {
     return fetch("https://api.vk.com/method/groups.getMembers", {
@@ -11,7 +12,13 @@ export async function getNewGroupMembersData(groupId: string): Promise<string> {
         "method": "POST"
     })
         .then(response => response.json())
-        .then(data => JSON.stringify(data))
+        .then(response => {
+            if (response.response) {
+                return JSON.stringify(response)
+            } else {
+                return responseToIncorrectRequest
+            }
+        })
 }
 
 export async function getCommunityName(groupId: string): Promise<string | void> {
